@@ -17,7 +17,7 @@ namespace WordDivisionPuzzles.Views
         public NewItemPage()
         {
             InitializeComponent();
-
+            iAA = 0;
             //////////////////////////
 
             
@@ -25,9 +25,9 @@ namespace WordDivisionPuzzles.Views
             Random random = new Random();
 
 
-            int iDivisor = random.Next(500, 1000); //321;
+            int iDivisor = 721; //  random.Next(500, 1000); //321;
 
-            int iQuotient = random.Next(10000, 99999); //45678;
+            int iQuotient = 92611;//  random.Next(10000, 99999); //45678;
 
             //int iDividend       = iQuotient * iDivisor;
 
@@ -178,7 +178,7 @@ namespace WordDivisionPuzzles.Views
                 {
 
                     j = 1;
-                    while (iDivisor > iRemainder)
+                    while (iDivisor >= iRemainder)
                     {
                         if ((i + j) > iDividendLength)
                         {
@@ -226,7 +226,7 @@ namespace WordDivisionPuzzles.Views
                             //   606        606     last line before 0 and completion
 
 
-                            if (m - iPCorrect >= 0)
+                            if (m - iPCorrect > 0)
                             {
                                 grid.Children.Add(new Label
                                 {
@@ -310,7 +310,7 @@ namespace WordDivisionPuzzles.Views
                                 WidthRequest = columnWidth,
                                 TextColor = Color.White
                             }
-                                , iAbsolutePosition + iAA, iRow);
+                                , iAbsolutePosition + iAnotherAdjstment + iAA, iRow);
 
 
                             grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition + iAA, iRow + 1); // column, row   
@@ -324,7 +324,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = 4,
                                     TextColor = Color.White
                                 }
-                                    , iAbsolutePosition + iAA - 1, iRow);
+                                    , iAbsolutePosition + iAnotherAdjstment + iAA - 1, iRow);
                                 bCheck = true;
                             }
 
@@ -338,7 +338,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = columnWidth,
                                     TextColor = Color.White
                                 }
-                                , iAbsolutePosition + iAA + j - 1, iRow + 2);
+                                , iAbsolutePosition + iAnotherAdjstment + iAA + j -1, iRow + 2);
                             }
                         }
                     }

@@ -25,7 +25,7 @@ namespace WordDivisionPuzzles.Views
         {
             
             InitializeComponent();
-
+            iAA = 0;
             var strDivisor = viewModel.Item.Divisor; // Get the divisor from the model.
             var strQuotient = viewModel.Item.Quotient; // Get the quotient from the model.
                                                        ///////////////////////////////////
