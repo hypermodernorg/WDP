@@ -25,15 +25,15 @@ namespace WordDivisionPuzzles.Views
             Random random = new Random();
 
 
-            int iDivisor = 721; //  random.Next(500, 1000); //321;
+            int iDivisor = random.Next(500, 1000); //321;
 
-            int iQuotient = 92611;//  random.Next(10000, 99999); //45678;
+            int iQuotient = random.Next(10000, 99999); //45678;
 
             //int iDividend       = iQuotient * iDivisor;
 
-            // iDivisor = 606;
+            // iDivisor = 721;
 
-            //iQuotient = 35691;
+            //iQuotient = 92611;
 
             int iDividend = iQuotient * iDivisor;
 
@@ -166,6 +166,7 @@ namespace WordDivisionPuzzles.Views
             // THE REST PART 2
             int iCol = iDivisorLength + 1;
             int iRow = 6;
+            
             for (int i = iPosition; i <= iDividendLength; i++)
             {
                 int iAbsolutePosition = 0;
@@ -176,13 +177,13 @@ namespace WordDivisionPuzzles.Views
                 // ANDREW MESSED THIS UP
                 if (i != iDividendLength)
                 {
-
+                    
                     j = 1;
                     while (iDivisor >= iRemainder)
                     {
                         if ((i + j) > iDividendLength)
                         {
-
+                           // DisplayAlert("break", iRemainder.ToString(), "NEXT");
                             break;
                         } // break if dividend length is exceeded
                         if (iRemainder == 0) { DisplayAlert("test", iRemainder.ToString(), "NEXT"); }
@@ -201,8 +202,10 @@ namespace WordDivisionPuzzles.Views
                         {
                             iAnotherAdjstment = (iQuotient * iDivisor).ToString().Length - iDivideInto.ToString().Length;
                             iAA = iAnotherAdjstment;
+                            iCol += iAnotherAdjstment;
+                       
                         }
-
+                        
                         //Lets print the iProduct and iDivideInto
                         bool bCheck = false;
 
@@ -213,20 +216,23 @@ namespace WordDivisionPuzzles.Views
                         {
                             iPCorrect = iDivideInto.ToString().Length - iProduct.ToString().Length;
                         }
+
+
+
                         for (m = 0; m < iDivideInto.ToString().Length + iAnotherAdjstment; m++)
                         {
-
+                   
                             iAbsolutePosition = iCol + iL + m;
+                            // iCol: The divisor length + one. Plus one accounts for the vertivle border.
+                            // iL: The length of divideinto - length of (iquotient * divisor)
+                            //      -- Sometimes iL can be negative, in which case we subtract in reverse the above and assign
+                            //      -- it to iAnotherAdjustment
 
-                            //  iProduct
-                            //  wrong     right
-                            //  5514      5514      product
-                            //  545       5545      divide 
-                            //   606        606     product
-                            //   606        606     last line before 0 and completion
+                            //Todo: The issue for 721 * 92611 is that iAnotherAdjustment is not carrying over to the next iProduct.
+                            //Todo: The fix involves making that happen.
+                            //      Possible resolution candidate: add iAnotherAdjustment to iCol.
 
-
-                            if (m - iPCorrect > 0)
+                            if (m - iPCorrect >= 0)
                             {
                                 grid.Children.Add(new Label
                                 {
@@ -236,7 +242,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = columnWidth,
                                     TextColor = Color.White
                                 }
-                                , iAbsolutePosition - iPCorrect + iAnotherAdjstment, iRow);
+                                , iAbsolutePosition - iPCorrect, iRow);
 
                             }
 
@@ -252,13 +258,13 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = columnWidth,
                                     TextColor = Color.White
                                 }
-                                , iAbsolutePosition - iPCorrect + iAnotherAdjstment + j - 1, iRow + 2);
+                                , iAbsolutePosition - iPCorrect  + j - 1, iRow + 2);
 
                             }
 
 
                             // Horizonal row and subtraction signt
-                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect + iAnotherAdjstment, iRow + 1); // column, row   
+                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect , iRow + 1); // column, row   
                             if (bCheck == false)
                             {
                                 grid.Children.Add(new Label
@@ -269,16 +275,16 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = 4,
                                     TextColor = Color.White
                                 }
-                                    , iAbsolutePosition - iPCorrect + iAnotherAdjstment - 1, iRow);
+                                    , iAbsolutePosition - iPCorrect  - 1, iRow);
                                 bCheck = true;
                             }
-
+                            
 
                         }
                     }
                 }
 
-                if (i == iDividendLength)
+                if (i == iDividendLength || (i-iAnotherAdjstment) == iDividendLength)
                 {
 
                     j = 1;
@@ -310,10 +316,10 @@ namespace WordDivisionPuzzles.Views
                                 WidthRequest = columnWidth,
                                 TextColor = Color.White
                             }
-                                , iAbsolutePosition + iAnotherAdjstment + iAA, iRow);
+                                , iAbsolutePosition, iRow);
 
 
-                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition + iAA, iRow + 1); // column, row   
+                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition, iRow + 1); // column, row   
                             if (bCheck == false)
                             {
                                 grid.Children.Add(new Label
@@ -324,7 +330,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = 4,
                                     TextColor = Color.White
                                 }
-                                    , iAbsolutePosition + iAnotherAdjstment + iAA - 1, iRow);
+                                    , iAbsolutePosition- 1, iRow);
                                 bCheck = true;
                             }
 
@@ -338,7 +344,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = columnWidth,
                                     TextColor = Color.White
                                 }
-                                , iAbsolutePosition + iAnotherAdjstment + iAA + j -1, iRow + 2);
+                                , iAbsolutePosition+ j -1, iRow + 2);
                             }
                         }
                     }
