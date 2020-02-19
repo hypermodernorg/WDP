@@ -11,7 +11,7 @@ namespace WordDivisionPuzzles.Views
     [DesignTimeVisible(false)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;      
+        ItemDetailViewModel viewModel;
         static int columnWidth = 20;
         static int iAA = 0;
         //public Item Item { get; set; }
@@ -23,7 +23,7 @@ namespace WordDivisionPuzzles.Views
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
-            
+
             InitializeComponent();
             iAA = 0;
             var strDivisor = viewModel.Item.Divisor; // Get the divisor from the model.

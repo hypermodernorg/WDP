@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
@@ -20,7 +19,7 @@ namespace WordDivisionPuzzles.Views
             iAA = 0;
             //////////////////////////
 
-            
+
 
             Random random = new Random();
 
@@ -29,11 +28,14 @@ namespace WordDivisionPuzzles.Views
 
             int iQuotient = random.Next(10000, 99999); //45678;
 
+            // 721*92611 resolved
+            // 644*13276
+
             //int iDividend       = iQuotient * iDivisor;
 
-            // iDivisor = 721;
+            iDivisor = 925;
 
-            //iQuotient = 92611;
+            iQuotient = 14911;
 
             int iDividend = iQuotient * iDivisor;
 
@@ -166,24 +168,28 @@ namespace WordDivisionPuzzles.Views
             // THE REST PART 2
             int iCol = iDivisorLength + 1;
             int iRow = 6;
-            
+            bool bFirstPass = true;
             for (int i = iPosition; i <= iDividendLength; i++)
             {
                 int iAbsolutePosition = 0;
                 int iAnotherAdjstment = 0;
+               
                 int m = 0;
-
+                int iFirstPassCorrection = 0;
 
                 // ANDREW MESSED THIS UP
                 if (i != iDividendLength)
                 {
+                    bool bCheck = false;
                     
+                    int iPCorrect = 0;
                     j = 1;
+
                     while (iDivisor >= iRemainder)
                     {
                         if ((i + j) > iDividendLength)
                         {
-                           // DisplayAlert("break", iRemainder.ToString(), "NEXT");
+                            // DisplayAlert("break", iRemainder.ToString(), "NEXT");
                             break;
                         } // break if dividend length is exceeded
                         if (iRemainder == 0) { DisplayAlert("test", iRemainder.ToString(), "NEXT"); }
@@ -191,100 +197,105 @@ namespace WordDivisionPuzzles.Views
                         j++;
                     }
 
-                    if (iRemainder != 50000)
+
+                    iDivideInto = iRemainder;
+                    string test = iDividend.ToString().Substring(0, iProduct.ToString().Length);
+                    if (iProduct.ToString().Length < iDivideInto.ToString().Length)
+                    {
+                        iPCorrect = iDivideInto.ToString().Length - iProduct.ToString().Length;
+                    }
+                    
+
+                    if (iPCorrect !=0 && bFirstPass)
+                    {
+                        // iPCorrect = test.Length - iProduct.ToString().Length;
+                        if (iProduct < int.Parse(iDividend.ToString().Substring(0, iProduct.ToString().Length)))
+                        {
+                            iFirstPassCorrection = 1;
+                            iCol -= 1;
+                        }
+
+
+                    }
+
+
+
+
+                    int iL = iDivideInto.ToString().Length - (iQuotient * iDivisor).ToString().Length; //Ex. 1466(4)-1284(4) = 0
+                    if (iL <= -1)
+                    {
+                        iAnotherAdjstment = (iQuotient * iDivisor).ToString().Length - iDivideInto.ToString().Length;
+                        iAA = iAnotherAdjstment;
+                        iCol += iAnotherAdjstment;
+
+                    }
+
+ 
+
+
+                    for (m = 0; m < iDivideInto.ToString().Length + iAnotherAdjstment; m++)
                     {
 
-                        // what happens when length 3 - Length 4 = -1?
+                        iAbsolutePosition = iCol + iL + m;
+                        // iCol: The divisor length + one. Plus one accounts for the vertivle border.
+                        // iL: The length of divideinto - length of (iquotient * divisor)
+                        //      -- Sometimes iL can be negative, in which case we subtract in reverse the above and assign
+                        //      -- it to iAnotherAdjustment
 
-                        iDivideInto = iRemainder;
-                        int iL = iDivideInto.ToString().Length - (iQuotient * iDivisor).ToString().Length; //Ex. 1466(4)-1284(4) = 0
-                        if (iL <= -1)
+                        //Todo: The issue for 721 * 92611 is that iAnotherAdjustment is not carrying over to the next iProduct.
+                        //Todo: The fix involves making that happen.
+                        //      Possible resolution candidate: add iAnotherAdjustment to iCol.
+
+                        if (m - iPCorrect >= 0)
                         {
-                            iAnotherAdjstment = (iQuotient * iDivisor).ToString().Length - iDivideInto.ToString().Length;
-                            iAA = iAnotherAdjstment;
-                            iCol += iAnotherAdjstment;
-                       
+                            grid.Children.Add(new Label
+                            {
+                                Text = iProduct.ToString().Substring(m - iPCorrect, 1),
+                                FontSize = 24,
+                                HorizontalTextAlignment = TextAlignment.Center,
+                                WidthRequest = columnWidth,
+                                TextColor = Color.White
+                            }
+                            , iAbsolutePosition - iPCorrect, iRow);
+
                         }
-                        
-                        //Lets print the iProduct and iDivideInto
-                        bool bCheck = false;
 
+                        //iDivideInto
 
-                        int iPCorrect = 0;
-
-                        if (iProduct.ToString().Length < iDivideInto.ToString().Length)
+                        if (m - iAnotherAdjstment >= 0)
                         {
-                            iPCorrect = iDivideInto.ToString().Length - iProduct.ToString().Length;
+                            grid.Children.Add(new Label
+                            {
+                                Text = iDivideInto.ToString().Substring(m - iAnotherAdjstment, 1),
+                                FontSize = 24,
+                                HorizontalTextAlignment = TextAlignment.Center,
+                                WidthRequest = columnWidth,
+                                TextColor = Color.White
+                            }
+                            , iAbsolutePosition - iPCorrect + j - 1, iRow + 2);
+
                         }
 
 
-
-                        for (m = 0; m < iDivideInto.ToString().Length + iAnotherAdjstment; m++)
+                        // Horizonal row and subtraction signt
+                        grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect + iFirstPassCorrection, iRow + 1); // column, row   
+                        if (bCheck == false)
                         {
-                   
-                            iAbsolutePosition = iCol + iL + m;
-                            // iCol: The divisor length + one. Plus one accounts for the vertivle border.
-                            // iL: The length of divideinto - length of (iquotient * divisor)
-                            //      -- Sometimes iL can be negative, in which case we subtract in reverse the above and assign
-                            //      -- it to iAnotherAdjustment
-
-                            //Todo: The issue for 721 * 92611 is that iAnotherAdjustment is not carrying over to the next iProduct.
-                            //Todo: The fix involves making that happen.
-                            //      Possible resolution candidate: add iAnotherAdjustment to iCol.
-
-                            if (m - iPCorrect >= 0)
+                            grid.Children.Add(new Label
                             {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = iProduct.ToString().Substring(m - iPCorrect, 1),
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = columnWidth,
-                                    TextColor = Color.White
-                                }
-                                , iAbsolutePosition - iPCorrect, iRow);
-
+                                Text = "-",
+                                FontSize = 24,
+                                HorizontalTextAlignment = TextAlignment.Center,
+                                WidthRequest = 4,
+                                TextColor = Color.White
                             }
-
-                            //iDivideInto
-
-                            if (m - iAnotherAdjstment >= 0)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = iDivideInto.ToString().Substring(m - iAnotherAdjstment, 1),
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = columnWidth,
-                                    TextColor = Color.White
-                                }
-                                , iAbsolutePosition - iPCorrect  + j - 1, iRow + 2);
-
-                            }
-
-
-                            // Horizonal row and subtraction signt
-                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect , iRow + 1); // column, row   
-                            if (bCheck == false)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = "-",
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = 4,
-                                    TextColor = Color.White
-                                }
-                                    , iAbsolutePosition - iPCorrect  - 1, iRow);
-                                bCheck = true;
-                            }
-                            
-
+                                , iAbsolutePosition - iPCorrect - 1 + iFirstPassCorrection, iRow);
+                            bCheck = true;
                         }
                     }
                 }
 
-                if (i == iDividendLength || (i-iAnotherAdjstment) == iDividendLength)
+                if (i == iDividendLength || (i - iAnotherAdjstment) == iDividendLength)
                 {
 
                     j = 1;
@@ -330,7 +341,7 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = 4,
                                     TextColor = Color.White
                                 }
-                                    , iAbsolutePosition- 1, iRow);
+                                    , iAbsolutePosition - 1, iRow);
                                 bCheck = true;
                             }
 
@@ -344,12 +355,12 @@ namespace WordDivisionPuzzles.Views
                                     WidthRequest = columnWidth,
                                     TextColor = Color.White
                                 }
-                                , iAbsolutePosition+ j -1, iRow + 2);
+                                , iAbsolutePosition + j - 1, iRow + 2);
                             }
                         }
                     }
                 }
-                // END ANDREW MESSED THIS UP
+             
 
                 iCol++;
                 iRow += 3;
@@ -359,6 +370,7 @@ namespace WordDivisionPuzzles.Views
                 iRemainder = iDivideInto - iProduct;
 
                 //End Lets print
+                bFirstPass = false;
             }
             // END THE REST PART 2
 
