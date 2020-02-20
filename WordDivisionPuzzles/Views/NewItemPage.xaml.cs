@@ -33,9 +33,9 @@ namespace WordDivisionPuzzles.Views
 
             //int iDividend       = iQuotient * iDivisor;
 
-            iDivisor = 925;
+            //iDivisor = 925;
 
-            iQuotient = 14911;
+            //iQuotient = 14911;
 
             int iDividend = iQuotient * iDivisor;
 
@@ -189,20 +189,34 @@ namespace WordDivisionPuzzles.Views
                     {
                         if ((i + j) > iDividendLength)
                         {
-                            // DisplayAlert("break", iRemainder.ToString(), "NEXT");
                             break;
                         } // break if dividend length is exceeded
-                        if (iRemainder == 0) { DisplayAlert("test", iRemainder.ToString(), "NEXT"); }
+
                         iRemainder = int.Parse(iRemainder.ToString() + iDividend.ToString().Substring(i, j)); //dividend 26996150 and divisor 905 produce error here when last numbers are zero
                         j++;
                     }
 
 
+                    int iL = iDivideInto.ToString().Length - (iProduct).ToString().Length; //Ex. 1466(4)-1284(4) = 0
+                    if (iL <= -1)
+                    {
+                        iAnotherAdjstment = (iProduct.ToString().Length - iDivideInto.ToString().Length);
+                        iAA = iAnotherAdjstment;
+                        iCol += iAnotherAdjstment;
+
+                    }
+                    if (iL == 0 && iDivideInto < iProduct)
+                    {
+                        //iCol++;
+                    }
+
                     iDivideInto = iRemainder;
-                    string test = iDividend.ToString().Substring(0, iProduct.ToString().Length);
+           
+
                     if (iProduct.ToString().Length < iDivideInto.ToString().Length)
                     {
                         iPCorrect = iDivideInto.ToString().Length - iProduct.ToString().Length;
+                        //iCol++;
                     }
                     
 
@@ -212,23 +226,14 @@ namespace WordDivisionPuzzles.Views
                         if (iProduct < int.Parse(iDividend.ToString().Substring(0, iProduct.ToString().Length)))
                         {
                             iFirstPassCorrection = 1;
-                            iCol -= 1;
+                            iCol--;
                         }
 
-
                     }
 
 
 
 
-                    int iL = iDivideInto.ToString().Length - (iQuotient * iDivisor).ToString().Length; //Ex. 1466(4)-1284(4) = 0
-                    if (iL <= -1)
-                    {
-                        iAnotherAdjstment = (iQuotient * iDivisor).ToString().Length - iDivideInto.ToString().Length;
-                        iAA = iAnotherAdjstment;
-                        iCol += iAnotherAdjstment;
-
-                    }
 
  
 
@@ -246,6 +251,8 @@ namespace WordDivisionPuzzles.Views
                         //Todo: The fix involves making that happen.
                         //      Possible resolution candidate: add iAnotherAdjustment to iCol.
 
+
+                        // iProduct
                         if (m - iPCorrect >= 0)
                         {
                             grid.Children.Add(new Label
@@ -260,8 +267,7 @@ namespace WordDivisionPuzzles.Views
 
                         }
 
-                        //iDivideInto
-
+                        // iDivideInto
                         if (m - iAnotherAdjstment >= 0)
                         {
                             grid.Children.Add(new Label
@@ -277,7 +283,7 @@ namespace WordDivisionPuzzles.Views
                         }
 
 
-                        // Horizonal row and subtraction signt
+                        // Horizonal row and subtraction signs
                         grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect + iFirstPassCorrection, iRow + 1); // column, row   
                         if (bCheck == false)
                         {
@@ -292,6 +298,7 @@ namespace WordDivisionPuzzles.Views
                                 , iAbsolutePosition - iPCorrect - 1 + iFirstPassCorrection, iRow);
                             bCheck = true;
                         }
+                        bFirstPass = false;
                     }
                 }
 
@@ -312,10 +319,10 @@ namespace WordDivisionPuzzles.Views
                         bool bCheck = false;
 
 
-
+                        
                         for (m = 0; m < iDivideInto.ToString().Length; m++)
                         {
-
+                           
                             iAbsolutePosition = iCol + iL + m;
 
                             //iProduct
@@ -370,7 +377,7 @@ namespace WordDivisionPuzzles.Views
                 iRemainder = iDivideInto - iProduct;
 
                 //End Lets print
-                bFirstPass = false;
+          
             }
             // END THE REST PART 2
 
