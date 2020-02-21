@@ -12,12 +12,51 @@ namespace WordDivisionPuzzles.Views
     {
         public Item Item { get; set; }
         static int columnWidth = 20;
-        static int iAA = 0;
+
         public NewItemPage()
         {
             InitializeComponent();
 
+          
+            int iDivisor = GetRandom(500, 1000);
+            int iQuotient = GetRandom(10000, 99999);
+            int iDividend = iDivisor * iQuotient;
+            string strDivisor = iDivisor.ToString();
+            string strQuotient = iQuotient.ToString();
+            string strDividend = iDividend.ToString();
+            int iDivisorLength = strDivisor.Length;
+            int iQuotientLength = strQuotient.Length;
+            int iDividendLength = strDividend.Length;
 
+        }
+
+        // Store the quotient and divisor for later.
+        // Later make integer quotient and divisor hidden, while displaying
+        // .. the alphabetical form.
+        public void StoreItem(int iDivisor, int iQuotient)
+        {
+            Item = new Item
+            {
+                Quotient = iQuotient.ToString(),
+                Divisor = iDivisor.ToString()
+            };
+            BindingContext = this;
+        }
+
+
+        // Get a random number for both the iDivisor and iQuotient, 
+        // and make sure they do not contain zero's
+        public int GetRandom(int iRandomStart, int iRandomEnd)
+        {
+            Random random = new Random();
+
+            int iRandom = random.Next(iRandomStart, iRandomEnd);
+
+            while (iRandom.ToString().Contains("0"))
+            {
+                iRandom = random.Next(iRandomStart, iRandomEnd);
+            }
+            return iRandom;
         }
 
         public Grid ContainerGrid()
