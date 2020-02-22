@@ -35,12 +35,22 @@ namespace WordDivisionPuzzles.Views
             int iTotalLength = iDivisorLength + iDividendLength + 1;
             Grid grid = ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
             letters = MakeLetters();
+            ResourceDictionary dictionary = new ResourceDictionary();
+
+            string zero = (string)letters[0];
+            string one = (string)letters[1];
+            string two = (string)letters[2];
+            string three = (string)letters[3];
+            string four = (string)letters[4];
+            string five = (string)letters[5];
+            string six = (string)letters[6];
+            string seven = (string)letters[7];
+            string eight = (string)letters[8];
+            string nine = (string)letters[9];
+          
 
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
             grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
-
-
-           
 
             Grid containerGrid = (Grid)Content.FindByName("NewGrid");
             containerGrid.Children.Add(grid, 0, 0);
@@ -48,6 +58,24 @@ namespace WordDivisionPuzzles.Views
             StoreItem(iDivisor, iQuotient);
 
         }
+
+        public ResourceDictionary GetLettersDictionary()
+        {
+            ResourceDictionary dictionary = new ResourceDictionary();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Random random = new Random();
+                string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                int iRandom = random.Next(0, 25);
+                dictionary.Add(i.ToString(), alphabet.Substring(iRandom, 1));
+                alphabet.Remove(iRandom, 1);
+            }
+
+            return dictionary;
+        }
+        
+
 
         public ArrayList MakeLetters()
         {
@@ -57,7 +85,7 @@ namespace WordDivisionPuzzles.Views
 
             for (int i = 0; i<10; i++)
             {
-                int iRandom = random.Next(1, 26);
+                int iRandom = random.Next(0, 25-i);
                 letters.Add(alphabet.Substring(iRandom, 1));
                 alphabet.Remove(iRandom, 1);
             }
@@ -456,10 +484,6 @@ namespace WordDivisionPuzzles.Views
         }
 
         //////////////////////////
-
-
-
-
 
         async void Save_Clicked(object sender, EventArgs e)
         {
