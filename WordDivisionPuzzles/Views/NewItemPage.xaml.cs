@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Collections;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace WordDivisionPuzzles.Views
         //Todo: Need to correct the horizontal border when the product length is less than iDivideInto length.
         public Item Item { get; set; }
         static int columnWidth = 20;
+        static ArrayList letters = new ArrayList();
 
         public NewItemPage()
         {
@@ -32,12 +34,13 @@ namespace WordDivisionPuzzles.Views
             int iDividendLength = dividend.Length;
             int iTotalLength = iDivisorLength + iDividendLength + 1;
             Grid grid = ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
+            letters = MakeLetters();
 
-            grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid);
-            grid = LastLines(iTotalLength, divisor, quotient, dividend, grid);
+            grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
+            grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
 
-            char [] randomLetterList = MakeAlphabet();
 
+           
 
             Grid containerGrid = (Grid)Content.FindByName("NewGrid");
             containerGrid.Children.Add(grid, 0, 0);
@@ -46,26 +49,25 @@ namespace WordDivisionPuzzles.Views
 
         }
 
-        // Turn the numbers into letters
-        public Char [] MakeAlphabet()
-        { 
-            var randomLetterList = Enumerable.Range(0, 9)
-                            .Select(x => RandomLetter())
-                            .ToArray();
-
-            return randomLetterList;
-        }
-
-        public static Char RandomLetter()
+        public ArrayList MakeLetters()
         {
             Random random = new Random();
-            const string text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            int index = random.Next(text.Length);
-            return text[index];
+            ArrayList letters = new ArrayList();
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            for (int i = 0; i<10; i++)
+            {
+                int iRandom = random.Next(1, 26);
+                letters.Add(alphabet.Substring(iRandom, 1));
+                alphabet.Remove(iRandom, 1);
+            }
+
+            return letters;
         }
 
+
         // The first three lines, including the horizontal border, of the long division problem.
-        public Grid FirstThreeRows(int iTotalLength, string divisor, string quotient, string dividend, Grid grid)
+        public Grid FirstThreeRows(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
         {
             int iDivisorLength = divisor.Length;
             int iQuotientLength = quotient.Length;
@@ -106,7 +108,7 @@ namespace WordDivisionPuzzles.Views
 
                     grid.Children.Add(new Label
                     {
-                        Text = quotient.Substring(j, 1),
+                        Text =  (string) letters[int.Parse(quotient.Substring(j, 1))],
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -129,7 +131,7 @@ namespace WordDivisionPuzzles.Views
                 {
                     grid.Children.Add(new Label
                     {
-                        Text = divisor.Substring(i, 1),
+                        Text = (string)letters[int.Parse(divisor.Substring(i, 1))],// divisor.Substring(i, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -142,7 +144,7 @@ namespace WordDivisionPuzzles.Views
                 {
                     grid.Children.Add(new Label
                     {
-                        Text = dividend.Substring(j, 1),
+                        Text = (string)letters[int.Parse(dividend.Substring(j, 1))], // dividend.Substring(j, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -158,7 +160,7 @@ namespace WordDivisionPuzzles.Views
 
 
         // The last lines of the long division problem.
-        public Grid LastLines(int iTotalLength, string divisor, string quotient, string dividend, Grid grid)
+        public Grid LastLines(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
         {
             int iCol = divisor.Length + 1;
             int iRow = 6;
@@ -207,7 +209,7 @@ namespace WordDivisionPuzzles.Views
                     //Product
                     grid.Children.Add(new Label
                     {
-                        Text = iProduct.ToString().Substring(j, 1),
+                        Text = (string)letters[int.Parse(iProduct.ToString().Substring(j, 1))],// iProduct.ToString().Substring(j, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -260,7 +262,7 @@ namespace WordDivisionPuzzles.Views
                 {
                     grid.Children.Add(new Label
                     {
-                        Text = iDivideInto.ToString().Substring(j, 1),
+                        Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))], // iDivideInto.ToString().Substring(j, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -280,7 +282,7 @@ namespace WordDivisionPuzzles.Views
                 //Product
                 grid.Children.Add(new Label
                 {
-                    Text = iDivideInto.ToString().Substring(j, 1),
+                    Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))],// iDivideInto.ToString().Substring(j, 1),
                     FontSize = 24,
                     HorizontalTextAlignment = TextAlignment.Center,
                     WidthRequest = columnWidth,
@@ -315,7 +317,7 @@ namespace WordDivisionPuzzles.Views
             // Last Zero
             grid.Children.Add(new Label
             {
-                Text = "0",
+                Text = (string)letters[0],// "0",
                 FontSize = 24,
                 HorizontalTextAlignment = TextAlignment.Center,
                 WidthRequest = columnWidth,
