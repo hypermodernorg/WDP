@@ -87,7 +87,7 @@ namespace WordDivisionPuzzles.Views
             {
                 int iRandom = random.Next(0, 25-i);
                 letters.Add(alphabet.Substring(iRandom, 1));
-                alphabet.Remove(iRandom, 1);
+                alphabet = alphabet.Remove(iRandom, 1);
             }
 
             return letters;
@@ -211,7 +211,7 @@ namespace WordDivisionPuzzles.Views
                     }
                     else
                     {
-                        iDivideInto = int.Parse(dividend.Substring(0, divisor.Length + 1));
+                       iDivideInto = int.Parse(dividend.Substring(0, divisor.Length + 1));
                         //iCol++;
                         i++;
                     }

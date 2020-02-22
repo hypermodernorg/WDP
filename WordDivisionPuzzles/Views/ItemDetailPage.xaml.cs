@@ -105,7 +105,7 @@ namespace WordDivisionPuzzles.Views
 
             // the second row
             j = 0;
-            int k = 0;
+            int vk = 0;
             for (int i = 0; i < iTotalLength; i++)
             {
                 if (i < iDivisorLength)
