@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
+using System.Linq;
+
 
 namespace WordDivisionPuzzles.Views
 {
@@ -10,6 +12,8 @@ namespace WordDivisionPuzzles.Views
     [DesignTimeVisible(false)]
     public partial class NewItemPage : ContentPage
     {
+
+        //Todo: Need to correct the horizontal border when the product length is less than iDivideInto length.
         public Item Item { get; set; }
         static int columnWidth = 20;
 
@@ -32,11 +36,32 @@ namespace WordDivisionPuzzles.Views
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid);
             grid = LastLines(iTotalLength, divisor, quotient, dividend, grid);
 
+            char [] randomLetterList = MakeAlphabet();
+
+
             Grid containerGrid = (Grid)Content.FindByName("NewGrid");
             containerGrid.Children.Add(grid, 0, 0);
             this.Content = containerGrid; // set the content
             StoreItem(iDivisor, iQuotient);
 
+        }
+
+        // Turn the numbers into letters
+        public Char [] MakeAlphabet()
+        { 
+            var randomLetterList = Enumerable.Range(0, 9)
+                            .Select(x => RandomLetter())
+                            .ToArray();
+
+            return randomLetterList;
+        }
+
+        public static Char RandomLetter()
+        {
+            Random random = new Random();
+            const string text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int index = random.Next(text.Length);
+            return text[index];
         }
 
         // The first three lines, including the horizontal border, of the long division problem.
@@ -140,7 +165,7 @@ namespace WordDivisionPuzzles.Views
             int iDivideInto = 0;
             int iDivisor = int.Parse(divisor);
             bool isFirstPass = true;
-
+            int iProduct = 0;
  
 
 
@@ -166,17 +191,20 @@ namespace WordDivisionPuzzles.Views
 
 
                 int iQuotient = iDivideInto / iDivisor;
-                int iProduct = iQuotient * iDivisor;
+                iProduct = iQuotient * iDivisor;
 
-                // Print the Product
+                // Print the Product, Subtraction Sign, and the Border
                 if (iProduct.ToString().Length < iDivideInto.ToString().Length)
                 {
                     iCol++;
-                    //i++;
                 }
 
+                bool isSubtractFirstPass = true;
+
+              
                 for (int j = 0; j < iProduct.ToString().Length; j++)
                 {
+                    //Product
                     grid.Children.Add(new Label
                     {
                         Text = iProduct.ToString().Substring(j, 1),
@@ -186,9 +214,28 @@ namespace WordDivisionPuzzles.Views
                         TextColor = Color.White
                     }
                     , iCol + j, iRow);
+
+                    //Subtraction sign
+                   if (isSubtractFirstPass)
+                    {
+                        grid.Children.Add(new Label
+                        {
+                            Text = "-",
+                            FontSize = 24,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            WidthRequest = 4,
+                            TextColor = Color.White
+                        }
+                        , iCol + j-1, iRow);
+
+                        isSubtractFirstPass = false;
+                    }
+
+                    //Border
+                    grid.Children.Add(BvBorderHorizontal(), iCol + j, iRow+1); // column, row   -- horizontal border
                 }
-                iRow++;
-                // End Print the Product
+                iRow += 2;
+                // End Print the Product, Subtraction Sign, and the Border
 
                 // Get the difference between iDivideInto and iProduct
                 int iRemainder = iDivideInto - iProduct;
@@ -221,12 +268,60 @@ namespace WordDivisionPuzzles.Views
                     }
                     , iCol + j, iRow);
                 }
-
-
-          
                 iRow++;
             }
+
+
+            iRow++;
+            bool isSubtractFirstPass2 = true;
+            int iLastZeroPosition = 0;
+            for (int j = 0; j < iDivideInto.ToString().Length; j++)
+            {
+                //Product
+                grid.Children.Add(new Label
+                {
+                    Text = iDivideInto.ToString().Substring(j, 1),
+                    FontSize = 24,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    WidthRequest = columnWidth,
+                    TextColor = Color.White
+                }
+                , iCol + j, iRow);
+
+                //Subtraction sign
+                if (isSubtractFirstPass2)
+                {
+                    grid.Children.Add(new Label
+                    {
+                        Text = "-",
+                        FontSize = 24,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        WidthRequest = 4,
+                        TextColor = Color.White
+                    }
+                    , iCol + j - 1, iRow);
+
+                    isSubtractFirstPass2 = false;
+                }
+               
+
+                //Border
+                grid.Children.Add(BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
             
+
+                iLastZeroPosition = j;
+            }
+            iRow+=2;
+            // Last Zero
+            grid.Children.Add(new Label
+            {
+                Text = "0",
+                FontSize = 24,
+                HorizontalTextAlignment = TextAlignment.Center,
+                WidthRequest = columnWidth,
+                TextColor = Color.White
+            }
+            , iCol + iLastZeroPosition, iRow);
 
             return grid;
         }
