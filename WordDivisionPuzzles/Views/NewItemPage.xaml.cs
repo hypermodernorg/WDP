@@ -59,24 +59,6 @@ namespace WordDivisionPuzzles.Views
 
         }
 
-        public ResourceDictionary GetLettersDictionary()
-        {
-            ResourceDictionary dictionary = new ResourceDictionary();
-
-            for (int i = 0; i < 10; i++)
-            {
-                Random random = new Random();
-                string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                int iRandom = random.Next(0, 25);
-                dictionary.Add(i.ToString(), alphabet.Substring(iRandom, 1));
-                alphabet.Remove(iRandom, 1);
-            }
-
-            return dictionary;
-        }
-        
-
-
         public ArrayList MakeLetters()
         {
             Random random = new Random();
@@ -363,10 +345,26 @@ namespace WordDivisionPuzzles.Views
         // .. the alphabetical form.
         public void StoreItem(int iDivisor, int iQuotient)
         {
+            string alphaDivisor = "";
+            string alphaQuotient = "";
+            for (int i = 0;i<iDivisor.ToString().Length;i++)
+            {
+                // (string) letters[int.Parse(quotient.Substring(j, 1))]
+                alphaDivisor += (string)letters[int.Parse(iDivisor.ToString().Substring(i, 1))];
+            }
+
+            for (int i = 0; i < iQuotient.ToString().Length; i++)
+            {
+                alphaQuotient += (string)letters[int.Parse(iQuotient.ToString().Substring(i, 1))];
+            }
+
             Item = new Item
             {
                 Quotient = iQuotient.ToString(),
-                Divisor = iDivisor.ToString()
+                Divisor = iDivisor.ToString(),
+                Letters = letters,
+                AlphaQuotient = alphaQuotient,
+                AlphaDivisor = alphaDivisor
             };
             BindingContext = this;
         }

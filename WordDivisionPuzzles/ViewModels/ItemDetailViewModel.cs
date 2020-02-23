@@ -8,7 +8,7 @@ namespace WordDivisionPuzzles.ViewModels
         public Item Item { get; set; }
         public ItemDetailViewModel(Item item = null)
         {
-            Title = item?.Quotient;
+            Title = item?.Quotient + " * " + item.Divisor;
             Item = item;
         }
     }

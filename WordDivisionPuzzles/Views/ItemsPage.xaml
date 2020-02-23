@@ -12,7 +12,7 @@
         <ToolbarItem Text="+ New Puzzle" Clicked="AddItem_Clicked" />
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
+    <StackLayout BackgroundColor="Black">
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Items}"
                 VerticalOptions="FillAndExpand"
@@ -29,17 +29,28 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Quotient}" 
+                        <StackLayout Padding="10" BackgroundColor="DarkGray" Margin="0, 1,0,1" Orientation="Horizontal">
+                            <Label Text="{Binding AlphaDivisor}" 
                                 d:Text="{Binding .}"
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16" />
-                            <Label Text="{Binding Divisor}" 
+                                FontSize="16" 
+                                TextColor="Black"
+                             />
+                            <Label Text=" * " 
                                 d:Text="Item descripton"
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13" />
+                                FontSize="16" 
+                                TextColor="Black"
+                             />
+                            <Label Text="{Binding AlphaQuotient}" 
+                                d:Text="Item descripton"
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="16" 
+                                TextColor="Black"
+                             />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
