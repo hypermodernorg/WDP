@@ -11,6 +11,9 @@ namespace WordDivisionPuzzles.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
+
+
+
     public partial class NewItemPage : ContentPage
     {
 
@@ -18,13 +21,17 @@ namespace WordDivisionPuzzles.Views
         public Item Item { get; set; }
         static int columnWidth = 20;
         static ArrayList letters = new ArrayList();
+        CommonTasks task = new CommonTasks();
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            int iDivisor = GetRandom(500, 1000);
-            int iQuotient = GetRandom(10000, 99999);
+            // Class from the CommonTasks.cs file.
+    
+            int iDivisor = task.GetRandom(500, 1000);
+            int iQuotient = task.GetRandom(1000, 99999);
+       
             int iDividend = iDivisor * iQuotient;
             string divisor = iDivisor.ToString();
             string quotient = iQuotient.ToString();
@@ -33,9 +40,11 @@ namespace WordDivisionPuzzles.Views
             int iQuotientLength = quotient.Length;
             int iDividendLength = dividend.Length;
             int iTotalLength = iDivisorLength + iDividendLength + 1;
-            Grid grid = ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
+
+
+            Grid grid = task.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
             letters = MakeLetters();
-            ResourceDictionary dictionary = new ResourceDictionary();
+           
 
             string zero = (string)letters[0];
             string one = (string)letters[1];
@@ -94,11 +103,11 @@ namespace WordDivisionPuzzles.Views
                 {
                     if (i == iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(BvBorderVertical(), i, 4); // column, row   
+                        grid.Children.Add(task.BvBorderVertical(), i, 4); // column, row   
                     }
                     if (i > iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(BvBorderHorizontal(), i, 3); // column, row   
+                        grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   
                     }
 
                     if (i < iDivisorLength) // else, print empty spaces
@@ -126,7 +135,7 @@ namespace WordDivisionPuzzles.Views
                     }
                         , i, 2);
 
-                    grid.Children.Add(BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
+                    grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
 
                     j++;
                 }
@@ -134,7 +143,7 @@ namespace WordDivisionPuzzles.Views
 
             // Third Rows: The Divisor and Dividend
             j = 0;
-            grid.Children.Add(BvBorderCorner(), iDivisorLength, 3);
+            grid.Children.Add(task.BvBorderCorner(), iDivisorLength, 3);
             for (int i = 0; i < iTotalLength; i++)
             {
                 if (i < iDivisorLength)
@@ -167,7 +176,6 @@ namespace WordDivisionPuzzles.Views
 
             return grid;
         }
-
 
         // The last lines of the long division problem.
         public Grid LastLines(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
@@ -244,7 +252,7 @@ namespace WordDivisionPuzzles.Views
                     }
 
                     //Border
-                    grid.Children.Add(BvBorderHorizontal(), iCol + j, iRow+1); // column, row   -- horizontal border
+                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow+1); // column, row   -- horizontal border
                 }
                 iRow += 2;
                 // End Print the Product, Subtraction Sign, and the Border
@@ -318,7 +326,7 @@ namespace WordDivisionPuzzles.Views
                
 
                 //Border
-                grid.Children.Add(BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
             
 
                 iLastZeroPosition = j;
@@ -337,8 +345,6 @@ namespace WordDivisionPuzzles.Views
 
             return grid;
         }
-
-
 
         // Store the quotient and divisor for later.
         // Later make integer quotient and divisor hidden, while displaying
@@ -368,120 +374,6 @@ namespace WordDivisionPuzzles.Views
             };
             BindingContext = this;
         }
-
-
-        // Get a random number for both the iDivisor and iQuotient, 
-        // and make sure they do not contain zero's
-        public int GetRandom(int iRandomStart, int iRandomEnd)
-        {
-            Random random = new Random();
-
-            int iRandom = random.Next(iRandomStart, iRandomEnd);
-
-            while (iRandom.ToString().Contains("0"))
-            {
-                iRandom = random.Next(iRandomStart, iRandomEnd);
-            }
-            return iRandom;
-        }
-
-        public Grid ContainerGrid()
-        {
-            Grid grid = new Grid
-            {
-                //VerticalOptions = LayoutOptions.FillAndExpand,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-                BackgroundColor = Color.Black,
-
-
-            };
-
-            grid.RowDefinitions.Add(new RowDefinition { Height = 30 });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-            grid.RowDefinitions.Add(new RowDefinition { Height = 30 });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
-            return grid;
-        }
-
-
-        public Grid ShapeGrid(int iTotalLength, int iDivisorLength)
-        {
-
-            Grid grid = new Grid
-            {
-                //VerticalOptions = LayoutOptions.FillAndExpand,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-
-
-            };
-
-
-            for (int i = 0; i < iTotalLength; i++)
-            {
-                if (i == iDivisorLength)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-                }
-                else
-                {
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-                }
-
-
-            }
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-
-            //grid.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
-
-            return grid;
-
-        }
-
-
-        // Hack to get a border.
-        public BoxView BvBorderHorizontal()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                HeightRequest = 5,
-                BackgroundColor = Color.White,
-                WidthRequest = columnWidth
-            };
-            return boxViewBorder;
-        }
-
-        public BoxView BvBorderVertical()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                WidthRequest = 5,
-                BackgroundColor = Color.White,
-                HeightRequest = columnWidth
-
-            };
-            return boxViewBorder;
-        }
-
-        public BoxView BvBorderCorner()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                WidthRequest = 5,
-                BackgroundColor = Color.White,
-                HeightRequest = 5
-
-            };
-            return boxViewBorder;
-        }
-
-        //////////////////////////
 
         async void Save_Clicked(object sender, EventArgs e)
         {
