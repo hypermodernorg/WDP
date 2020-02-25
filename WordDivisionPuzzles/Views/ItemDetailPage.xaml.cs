@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using WordDivisionPuzzles.ViewModels;
+using System.Collections;
 using Xamarin.Forms;
 
 namespace WordDivisionPuzzles.Views
@@ -9,54 +10,60 @@ namespace WordDivisionPuzzles.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
+
+
     public partial class ItemDetailPage : ContentPage
     {
         ItemDetailViewModel viewModel;
         static int columnWidth = 20;
-        static int iAA = 0;
-        //public Item Item { get; set; }
-        /////////////////
-
-
-        // this ///////////////////
-
+        CommonTasks task = new CommonTasks();
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
-
             InitializeComponent();
-            iAA = 0;
+   
             var strDivisor = viewModel.Item.Divisor; // Get the divisor from the model.
             var strQuotient = viewModel.Item.Quotient; // Get the quotient from the model.
-                                                       ///////////////////////////////////
 
             Random random = new Random();
 
 
             int iDivisor = int.Parse(viewModel.Item.Divisor);
             int iQuotient = int.Parse(viewModel.Item.Quotient);
-            int iDividend = iQuotient * iDivisor;
 
-            // Eliminate some of the issues with zeros
+            int iDividend = iDivisor * iQuotient;
+            string divisor = iDivisor.ToString();
+            string quotient = iQuotient.ToString();
+            string dividend = iDividend.ToString();
+            int iDivisorLength = divisor.Length;
+            int iQuotientLength = quotient.Length;
+            int iDividendLength = dividend.Length;
+            int iTotalLength = iDivisorLength + iDividendLength + 1;
 
-            //Item = new Item
-            //{
-            //    Quotient = iQuotient.ToString(),
-            //    Divisor = iDivisor.ToString()
-            //};
+
+            Grid grid = task.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
             BindingContext = this;
+            var letters = viewModel.Item.Letters;
 
 
-            int iDivisorLength = iDivisor.ToString().Length;
-            int iQuotientLength = iQuotient.ToString().Length;
-            int iDividendLength = iDividend.ToString().Length;
+            grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
+            grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
 
-            int iTotalLength = iDividendLength + iDivisorLength + 1; // +1 for the vertical border
+            Grid containerGrid = (Grid)Content.FindByName("NewGrid");
+            containerGrid.Children.Add(grid, 0, 0);
+            this.Content = containerGrid; // set the content
+        }
+        // The first three lines, including the horizontal border, of the long division problem.
+        public Grid FirstThreeRows(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
+        {
+            int iDivisorLength = divisor.Length;
+            int iQuotientLength = quotient.Length;
+            int iDividendLength = dividend.Length;
 
-            Grid grid = ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
 
-            // the first row... the quotient, spacing, the underline, and the vertical border.
+            // First & Second Row: The Quotient
             int j = 0;
+
             for (int i = 1; i < iTotalLength; i++) // loop through the total number of columns.
             {
 
@@ -64,11 +71,11 @@ namespace WordDivisionPuzzles.Views
                 {
                     if (i == iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(BvBorderVertical(), i, 4); // column, row   
+                        grid.Children.Add(task.BvBorderVertical(), i, 4); // column, row   
                     }
                     if (i > iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(BvBorderHorizontal(), i, 3); // column, row   
+                        grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   
                     }
 
                     if (i < iDivisorLength) // else, print empty spaces
@@ -88,7 +95,7 @@ namespace WordDivisionPuzzles.Views
 
                     grid.Children.Add(new Label
                     {
-                        Text = iQuotient.ToString().Substring(j, 1),
+                        Text = (string)letters[int.Parse(quotient.Substring(j, 1))],
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -96,23 +103,22 @@ namespace WordDivisionPuzzles.Views
                     }
                         , i, 2);
 
-                    grid.Children.Add(BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
+                    grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
 
                     j++;
                 }
-            }
-            // end the first row
+            } // End First & Second Row
 
-            // the second row
+            // Third Rows: The Divisor and Dividend
             j = 0;
-            int vk = 0;
+            grid.Children.Add(task.BvBorderCorner(), iDivisorLength, 3);
             for (int i = 0; i < iTotalLength; i++)
             {
                 if (i < iDivisorLength)
                 {
                     grid.Children.Add(new Label
                     {
-                        Text = iDivisor.ToString().Substring(i, 1),
+                        Text = (string)letters[int.Parse(divisor.Substring(i, 1))],// divisor.Substring(i, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -125,7 +131,7 @@ namespace WordDivisionPuzzles.Views
                 {
                     grid.Children.Add(new Label
                     {
-                        Text = iDividend.ToString().Substring(j, 1),
+                        Text = (string)letters[int.Parse(dividend.Substring(j, 1))], // dividend.Substring(j, 1),
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -134,341 +140,181 @@ namespace WordDivisionPuzzles.Views
                         , i, 4);
                     j++;
                 }
-            }
-            // end the second row
+            } // Third Rows
 
-            // THE REST PART 1
+            return grid;
+        }
 
-            int iPosition;
-            if (iDivisor <= int.Parse(iDividend.ToString().Substring(0, iDivisorLength)))
-            {
-                iPosition = iDivisorLength;
-            }
-            else
-            {
-                iPosition = iDivisorLength + 1;
-            }
-
-            int iDivideInto = int.Parse(iDividend.ToString().Substring(0, iPosition)); //1466
-            iQuotient = iDivideInto / iDivisor; //4
-            int iProduct = iQuotient * iDivisor;
-            int iRemainder = iDivideInto - iProduct;  //182
-
-
-            // END THE REST PART 1
-
-            // THE REST PART 2
-            int iCol = iDivisorLength + 1;
+        // The last lines of the long division problem.
+        public Grid LastLines(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
+        {
+            int iCol = divisor.Length + 1;
             int iRow = 6;
-            for (int i = iPosition; i <= iDividendLength; i++)
+            int iDivideInto = 0;
+            int iDivisor = int.Parse(divisor);
+            bool isFirstPass = true;
+            int iProduct = 0;
+
+
+
+            for (int i = divisor.Length; i < dividend.Length; i++)
             {
-                int iAbsolutePosition = 0;
-                int iAnotherAdjstment = 0;
-                int m = 0;
 
-
-                // ANDREW MESSED THIS UP
-                if (i != iDividendLength)
+                // If this is the first pass, create iDivideInto from a substring of dividend.
+                if (isFirstPass)
                 {
-
-                    j = 1;
-                    while (iDivisor > iRemainder)
+                    if (int.Parse(dividend.Substring(0, divisor.Length)) >= int.Parse(divisor))
                     {
-                        if ((i + j) > iDividendLength)
-                        {
-
-                            break;
-                        } // break if dividend length is exceeded
-                        if (iRemainder == 0) { DisplayAlert("test", iRemainder.ToString(), "NEXT"); }
-                        iRemainder = int.Parse(iRemainder.ToString() + iDividend.ToString().Substring(i, j)); //dividend 26996150 and divisor 905 produce error here when last numbers are zero
-                        j++;
+                        iDivideInto = int.Parse(dividend.Substring(0, divisor.Length));
                     }
-
-                    if (iRemainder != 50000)
+                    else
                     {
-
-                        // what happens when length 3 - Length 4 = -1?
-
-                        iDivideInto = iRemainder;
-                        int iL = iDivideInto.ToString().Length - (iQuotient * iDivisor).ToString().Length; //Ex. 1466(4)-1284(4) = 0
-                        if (iL <= -1)
-                        {
-                            iAnotherAdjstment = (iQuotient * iDivisor).ToString().Length - iDivideInto.ToString().Length;
-                            iAA = iAnotherAdjstment;
-                        }
-
-                        //Lets print the iProduct and iDivideInto
-                        bool bCheck = false;
-
-
-                        int iPCorrect = 0;
-
-                        if (iProduct.ToString().Length < iDivideInto.ToString().Length)
-                        {
-                            iPCorrect = iDivideInto.ToString().Length - iProduct.ToString().Length;
-                        }
-                        for (m = 0; m < iDivideInto.ToString().Length + iAnotherAdjstment; m++)
-                        {
-
-                            iAbsolutePosition = iCol + iL + m;
-
-                            //  iProduct
-                            //  wrong     right
-                            //  5514      5514      product
-                            //  545       5545      divide 
-                            //   606        606     product
-                            //   606        606     last line before 0 and completion
-
-
-                            if (m - iPCorrect >= 0)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = iProduct.ToString().Substring(m - iPCorrect, 1),
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = columnWidth,
-                                    TextColor = Color.White
-                                }
-                                , iAbsolutePosition - iPCorrect + iAnotherAdjstment, iRow);
-
-                            }
-
-                            //iDivideInto
-
-                            if (m - iAnotherAdjstment >= 0)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = iDivideInto.ToString().Substring(m - iAnotherAdjstment, 1),
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = columnWidth,
-                                    TextColor = Color.White
-                                }
-                                , iAbsolutePosition - iPCorrect + iAnotherAdjstment + j - 1, iRow + 2);
-
-                            }
-
-
-                            // Horizonal row and subtraction signt
-                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition - iPCorrect + iAnotherAdjstment, iRow + 1); // column, row   
-                            if (bCheck == false)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = "-",
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = 4,
-                                    TextColor = Color.White
-                                }
-                                    , iAbsolutePosition - iPCorrect + iAnotherAdjstment - 1, iRow);
-                                bCheck = true;
-                            }
-
-
-                        }
+                        iDivideInto = int.Parse(dividend.Substring(0, divisor.Length + 1));
+                        //iCol++;
+                        i++;
                     }
+                    isFirstPass = false;
                 }
 
-                if (i == iDividendLength)
-                {
-
-                    j = 1;
-                    int iTest = iRemainder + iProduct + iQuotient;
-
-                    iRemainder = iProduct;
 
 
-                    if (iRemainder != 0)
-                    {
-                        int iL = iDivideInto.ToString().Length - (iQuotient * iDivisor).ToString().Length; //Ex. 1466(4)-1284(4) = 0
-                        iDivideInto = iRemainder;
-                        //Lets print the iProduct and iDivideInto
-                        bool bCheck = false;
-
-
-
-                        for (m = 0; m < iDivideInto.ToString().Length; m++)
-                        {
-
-                            iAbsolutePosition = iCol + iL + m;
-
-                            //iProduct
-                            grid.Children.Add(new Label
-                            {
-                                Text = iProduct.ToString().Substring(m, 1),
-                                FontSize = 24,
-                                HorizontalTextAlignment = TextAlignment.Center,
-                                WidthRequest = columnWidth,
-                                TextColor = Color.White
-                            }
-                                , iAbsolutePosition + iAA, iRow);
-
-
-                            grid.Children.Add(BvBorderHorizontal(), iAbsolutePosition + iAA, iRow + 1); // column, row   
-                            if (bCheck == false)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = "-",
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = 4,
-                                    TextColor = Color.White
-                                }
-                                    , iAbsolutePosition + iAA - 1, iRow);
-                                bCheck = true;
-                            }
-
-                            if (m == iDivideInto.ToString().Length - 1)
-                            {
-                                grid.Children.Add(new Label
-                                {
-                                    Text = "0",
-                                    FontSize = 24,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                    WidthRequest = columnWidth,
-                                    TextColor = Color.White
-                                }
-                                , iAbsolutePosition + iAA + j - 1, iRow + 2);
-                            }
-                        }
-                    }
-                }
-                // END ANDREW MESSED THIS UP
-
-                iCol++;
-                iRow += 3;
-
-                iQuotient = iDivideInto / iDivisor;
+                int iQuotient = iDivideInto / iDivisor;
                 iProduct = iQuotient * iDivisor;
-                iRemainder = iDivideInto - iProduct;
 
-                //End Lets print
+                // Print the Product, Subtraction Sign, and the Border
+                if (iProduct.ToString().Length < iDivideInto.ToString().Length)
+                {
+                    iCol++;
+                }
+
+                bool isSubtractFirstPass = true;
+
+
+                for (int j = 0; j < iProduct.ToString().Length; j++)
+                {
+                    //Product
+                    grid.Children.Add(new Label
+                    {
+                        Text = (string)letters[int.Parse(iProduct.ToString().Substring(j, 1))],// iProduct.ToString().Substring(j, 1),
+                        FontSize = 24,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        WidthRequest = columnWidth,
+                        TextColor = Color.White
+                    }
+                    , iCol + j, iRow);
+
+                    //Subtraction sign
+                    if (isSubtractFirstPass)
+                    {
+                        grid.Children.Add(new Label
+                        {
+                            Text = "-",
+                            FontSize = 24,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            WidthRequest = 4,
+                            TextColor = Color.White
+                        }
+                        , iCol + j - 1, iRow);
+
+                        isSubtractFirstPass = false;
+                    }
+
+                    //Border
+                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                }
+                iRow += 2;
+                // End Print the Product, Subtraction Sign, and the Border
+
+                // Get the difference between iDivideInto and iProduct
+                int iRemainder = iDivideInto - iProduct;
+
+                // Now, lets count how many columns to adjust
+                int iColAdjust = iProduct.ToString().Length - iRemainder.ToString().Length;
+                iCol += iColAdjust;
+
+
+
+                // Next, determine how many characters of dividend to bring down
+
+                int k = 0;
+                while (iRemainder < iDivisor)
+                {
+                    k++;
+                    iRemainder = int.Parse(iRemainder.ToString() + dividend.Substring(i, k));
+
+                }
+                iDivideInto = iRemainder;
+                for (int j = 0; j < iDivideInto.ToString().Length; j++)
+                {
+                    grid.Children.Add(new Label
+                    {
+                        Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))], // iDivideInto.ToString().Substring(j, 1),
+                        FontSize = 24,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        WidthRequest = columnWidth,
+                        TextColor = Color.White
+                    }
+                    , iCol + j, iRow);
+                }
+                iRow++;
             }
-            // END THE REST PART 2
-
-            grid.Children.Add(BvBorderCorner(), iDivisorLength, 3);
-            //grid.Children.Add(BorderBoxViewVertical(), divisorLength, 3);
-            //Grid containerGrid = ContainerGrid();
-            Grid containerGrid = (Grid)Content.FindByName("NewGrid");
-            // Number to Letter Conversion
-            int iNumberColumns = grid.ColumnDefinitions.Count; // Get number of columns
-            int iNumberRows = grid.RowDefinitions.Count; // Get number of rows.
-
-            string sAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //List<string> ls = sAlphabet.Split(' ').ToList();
-
-            // End Number to Letter Conversion
-
-            containerGrid.Children.Add(grid, 0, 0);
-            this.Content = containerGrid; // set the content
 
 
-
-
-            ///////////////////////////////////
-            //Grid containerGrid = (Grid)Content.FindByName("NewGrid"); // Get the xaml grid.
-            //containerGrid.Children.Add(new Label { Text = strDivisor, TextColor = Color.White }); // add the generated grid to the xaml grid.
-            BindingContext = this.viewModel = viewModel; // not quite sure about what this does.
-        }
-        public Grid ContainerGrid()
-        {
-            Grid grid = new Grid
+            iRow++;
+            bool isSubtractFirstPass2 = true;
+            int iLastZeroPosition = 0;
+            for (int j = 0; j < iDivideInto.ToString().Length; j++)
             {
-                //VerticalOptions = LayoutOptions.FillAndExpand,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-                BackgroundColor = Color.Black,
+                //Product
+                grid.Children.Add(new Label
+                {
+                    Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))],// iDivideInto.ToString().Substring(j, 1),
+                    FontSize = 24,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    WidthRequest = columnWidth,
+                    TextColor = Color.White
+                }
+                , iCol + j, iRow);
+
+                //Subtraction sign
+                if (isSubtractFirstPass2)
+                {
+                    grid.Children.Add(new Label
+                    {
+                        Text = "-",
+                        FontSize = 24,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        WidthRequest = 4,
+                        TextColor = Color.White
+                    }
+                    , iCol + j - 1, iRow);
+
+                    isSubtractFirstPass2 = false;
+                }
 
 
-            };
+                //Border
+                grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = 30 });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-            grid.RowDefinitions.Add(new RowDefinition { Height = 30 });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
+
+                iLastZeroPosition = j;
+            }
+            iRow += 2;
+            // Last Zero
+            grid.Children.Add(new Label
+            {
+                Text = (string)letters[0],// "0",
+                FontSize = 24,
+                HorizontalTextAlignment = TextAlignment.Center,
+                WidthRequest = columnWidth,
+                TextColor = Color.White
+            }
+            , iCol + iLastZeroPosition, iRow);
+
             return grid;
         }
 
 
-        public Grid ShapeGrid(int iTotalLength, int iDivisorLength)
-        {
-
-            Grid grid = new Grid
-            {
-                //VerticalOptions = LayoutOptions.FillAndExpand,
-                ColumnSpacing = 0,
-                RowSpacing = 0,
-
-
-            };
-
-
-            for (int i = 0; i < iTotalLength; i++)
-            {
-                if (i == iDivisorLength)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-                }
-                else
-                {
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-                }
-
-
-            }
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-
-            //grid.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
-
-            return grid;
-
-        }
-
-
-        // Hack to get a border.
-        public BoxView BvBorderHorizontal()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                HeightRequest = 5,
-                BackgroundColor = Color.White,
-                WidthRequest = columnWidth
-            };
-            return boxViewBorder;
-        }
-
-        public BoxView BvBorderVertical()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                WidthRequest = 5,
-                BackgroundColor = Color.White,
-                HeightRequest = columnWidth
-
-            };
-            return boxViewBorder;
-        }
-
-        public BoxView BvBorderCorner()
-        {
-            BoxView boxViewBorder = new BoxView
-            {
-                WidthRequest = 5,
-                BackgroundColor = Color.White,
-                HeightRequest = 5
-
-            };
-            return boxViewBorder;
-        }
 
         public ItemDetailPage()
         {
