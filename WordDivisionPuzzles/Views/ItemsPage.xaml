@@ -51,6 +51,7 @@
                                 FontSize="16" 
                                 TextColor="Black"
                              />
+                           
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
