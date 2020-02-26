@@ -329,5 +329,23 @@ namespace WordDivisionPuzzles.Views
             viewModel = new ItemDetailViewModel(item);
             BindingContext = viewModel;
         }
+
+        private void DeleteItem_Clicked(object sender, EventArgs e)
+        {
+            BaseViewModel BVM = new BaseViewModel();
+
+            var item = (Xamarin.Forms.Button)sender;
+
+            string theID = item.CommandParameter.ToString();
+                BVM.DataStore.DeleteItemAsync(theID);
+
+
+            // Need to get the id string.
+            // BVM.DataStore.DeleteItemAsync();
+            // BindingContext = viewModel;
+
+
+        }
+
     }
 }

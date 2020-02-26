@@ -13,6 +13,9 @@
         <Label Text="Quotient:" FontSize="Medium" />
         <Label Text="{Binding Item.Quotient}" d:Text="Item description" FontSize="Small"/>
     </StackLayout>-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="- Delete Puzzle" Clicked="DeleteItem_Clicked" CommandParameter="{Binding Id}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="NewGrid" Padding="30" BackgroundColor="Black">
         </Grid>
