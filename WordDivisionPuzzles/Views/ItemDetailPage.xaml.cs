@@ -28,7 +28,8 @@ namespace WordDivisionPuzzles.Views
     
 
             Random random = new Random();
-
+            ToolbarItem toolBarItem = (ToolbarItem)Content.FindByName("NewToolBar");
+            toolBarItem.CommandParameter = viewModel.Item.Id;
 
             int iDivisor = int.Parse(viewModel.Item.Divisor);
             int iQuotient = int.Parse(viewModel.Item.Quotient);
@@ -340,16 +341,18 @@ namespace WordDivisionPuzzles.Views
             var toolBarDelete = (ToolbarItem)sender; // The delete button
 
             //MessagingCenter.Send(this, "DeleteItem", Item);
-            await Navigation.PopModalAsync();
-
-
-            //var toolBarDelete = (ToolbarItem)sender; // The delete button
-            //string theID = toolBarDelete.CommandParameter.ToString(); // The id of the item.
             
-            //BaseViewModel baseViewModel = new BaseViewModel();
-            //baseViewModel.DataStore.DeleteItemAsync(theID);
+
+            //await Navigation.PopModalAsync();
+
+
+           
+            string theID = toolBarDelete.CommandParameter.ToString(); // The id of the item.
+        
+            BaseViewModel baseViewModel = new BaseViewModel();
+            await baseViewModel.DataStore.DeleteItemAsync(theID);
        
-            //Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
+            await Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
         }
     }
 }

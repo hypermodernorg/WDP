@@ -366,7 +366,7 @@ namespace WordDivisionPuzzles.Views
 
             Item = new Item
             {
-                Id              = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Quotient        = iQuotient.ToString(),
                 Divisor         = iDivisor.ToString(),
                 Letters         = letters,

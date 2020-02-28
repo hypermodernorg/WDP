@@ -8,7 +8,7 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="- Delete Puzzle" Clicked="DeleteItem_Clicked" CommandParameter="{Binding Id}"/>
+        <ToolbarItem x:Name="NewToolBar" Text="- Delete Puzzle" Clicked="DeleteItem_Clicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="NewGrid" Padding="30" BackgroundColor="Black">

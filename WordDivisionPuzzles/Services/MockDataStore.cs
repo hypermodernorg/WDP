@@ -40,16 +40,20 @@ namespace WordDivisionPuzzles.Services
 
             // The string is getting passed. At least, A string is getting passed. Is it the correct string?
             // Memory address? If the correct string, why isnt the below finding the associated item?
-            var oldItem = items.Where((Item arg) => arg.Id == id).FirstOrDefault();
-
+            //var oldItem = items.Where((Item arg) => arg.Id == id).FirstOrDefault();
+            Item oldItem = new Item();
 
             // the id strings arent matching. Why?
             foreach (var item in items)
             {
-                string theID = item.Id;
-                string anID = id;
-                string divisor = item.Divisor;
-                
+                string idFromItem = item.Id;
+                string idFromPassed = id;
+           
+
+                if (item.Id == id)
+                {
+                    oldItem = item;
+                }
             }
 
             items.Remove(oldItem);
