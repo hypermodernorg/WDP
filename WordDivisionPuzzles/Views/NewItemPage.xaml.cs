@@ -366,13 +366,16 @@ namespace WordDivisionPuzzles.Views
 
             Item = new Item
             {
-                Quotient = iQuotient.ToString(),
-                Divisor = iDivisor.ToString(),
-                Letters = letters,
-                AlphaQuotient = alphaQuotient,
-                AlphaDivisor = alphaDivisor
+                Id              = Guid.NewGuid().ToString(),
+                Quotient        = iQuotient.ToString(),
+                Divisor         = iDivisor.ToString(),
+                Letters         = letters,
+                AlphaQuotient   = alphaQuotient,
+                AlphaDivisor    = alphaDivisor
             };
             BindingContext = this;
+
+
         }
 
         async void Save_Clicked(object sender, EventArgs e)

@@ -7,12 +7,6 @@
              x:Class="WordDivisionPuzzles.Views.ItemDetailPage"
              Title="{Binding Title}">
 
-    <!--<StackLayout Spacing="20" Padding="15">
-        <Label Text="Divisor:" FontSize="Medium" />
-        <Label Text="{Binding Item.Divisor}" d:Text="Item name" FontSize="Small"/>
-        <Label Text="Quotient:" FontSize="Medium" />
-        <Label Text="{Binding Item.Quotient}" d:Text="Item description" FontSize="Small"/>
-    </StackLayout>-->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="- Delete Puzzle" Clicked="DeleteItem_Clicked" CommandParameter="{Binding Id}"/>
     </ContentPage.ToolbarItems>

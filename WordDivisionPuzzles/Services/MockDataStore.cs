@@ -7,13 +7,14 @@ namespace WordDivisionPuzzles.Services
 {
     public class MockDataStore : IDataStore<Item>
     {
-        readonly List<Item> items;
+        //readonly List<Item> items;
+        public List<Item> items;
 
         public MockDataStore()
         {
             items = new List<Item>()
             {
-                // new Item { Id = Guid.NewGuid().ToString(), Quotient = "49832", Divisor="231" },
+              //new Item { Id = System.Guid.NewGuid().ToString(), Quotient = "49832", Divisor="231" },
 
             };
         }
@@ -36,7 +37,21 @@ namespace WordDivisionPuzzles.Services
 
         public async Task<bool> DeleteItemAsync(string id)
         {
+
+            // The string is getting passed. At least, A string is getting passed. Is it the correct string?
+            // Memory address? If the correct string, why isnt the below finding the associated item?
             var oldItem = items.Where((Item arg) => arg.Id == id).FirstOrDefault();
+
+
+            // the id strings arent matching. Why?
+            foreach (var item in items)
+            {
+                string theID = item.Id;
+                string anID = id;
+                string divisor = item.Divisor;
+                
+            }
+
             items.Remove(oldItem);
 
             return await Task.FromResult(true);

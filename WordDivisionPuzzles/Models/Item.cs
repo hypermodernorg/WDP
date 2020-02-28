@@ -10,6 +10,5 @@ namespace WordDivisionPuzzles.Models
         public string AlphaDivisor { get; set; }
         public string AlphaQuotient { get; set; }
         public ArrayList Letters { get; set; }
-        
     }
 }

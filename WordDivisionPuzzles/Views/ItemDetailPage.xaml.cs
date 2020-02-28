@@ -3,6 +3,7 @@ using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using WordDivisionPuzzles.ViewModels;
 using System.Collections;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace WordDivisionPuzzles.Views
@@ -24,6 +25,7 @@ namespace WordDivisionPuzzles.Views
    
             var strDivisor = viewModel.Item.Divisor; // Get the divisor from the model.
             var strQuotient = viewModel.Item.Quotient; // Get the quotient from the model.
+    
 
             Random random = new Random();
 
@@ -323,29 +325,31 @@ namespace WordDivisionPuzzles.Views
             var item = new Item
             {
                 Quotient = "Item 1",
-                Divisor = "This is an item description."
+                Divisor = "This is an item description.",
+           
             };
 
             viewModel = new ItemDetailViewModel(item);
             BindingContext = viewModel;
         }
 
-        private void DeleteItem_Clicked(object sender, EventArgs e)
+  
+        async void DeleteItem_Clicked(object sender, EventArgs e)
         {
-            BaseViewModel BVM = new BaseViewModel();
 
-            var item = (Xamarin.Forms.Button)sender;
+            var toolBarDelete = (ToolbarItem)sender; // The delete button
 
-            string theID = item.CommandParameter.ToString();
-                BVM.DataStore.DeleteItemAsync(theID);
-
-
-            // Need to get the id string.
-            // BVM.DataStore.DeleteItemAsync();
-            // BindingContext = viewModel;
+            //MessagingCenter.Send(this, "DeleteItem", Item);
+            await Navigation.PopModalAsync();
 
 
+            //var toolBarDelete = (ToolbarItem)sender; // The delete button
+            //string theID = toolBarDelete.CommandParameter.ToString(); // The id of the item.
+            
+            //BaseViewModel baseViewModel = new BaseViewModel();
+            //baseViewModel.DataStore.DeleteItemAsync(theID);
+       
+            //Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
         }
-
     }
 }
