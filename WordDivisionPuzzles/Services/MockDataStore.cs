@@ -37,13 +37,9 @@ namespace WordDivisionPuzzles.Services
 
         public async Task<bool> DeleteItemAsync(string id)
         {
-
-            // The string is getting passed. At least, A string is getting passed. Is it the correct string?
-            // Memory address? If the correct string, why isnt the below finding the associated item?
-            //var oldItem = items.Where((Item arg) => arg.Id == id).FirstOrDefault();
             Item oldItem = new Item();
 
-            // the id strings arent matching. Why?
+            
             foreach (var item in items)
             {
                 string idFromItem = item.Id;
@@ -66,7 +62,7 @@ namespace WordDivisionPuzzles.Services
             return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = true)
         {
             return await Task.FromResult(items);
         }

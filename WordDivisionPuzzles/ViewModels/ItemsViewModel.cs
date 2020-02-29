@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using WordDivisionPuzzles.Models;
 using WordDivisionPuzzles.Views;
+
 using Xamarin.Forms;
 
 namespace WordDivisionPuzzles.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public  class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        public  ObservableCollection<Item> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
