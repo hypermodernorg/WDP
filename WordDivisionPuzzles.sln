@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDivisionPuzzles.Android
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDivisionPuzzles.iOS", "WordDivisionPuzzles.iOS\WordDivisionPuzzles.iOS.csproj", "{2B736266-3EEB-4A9D-B9CB-5FE548A3DF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDivisionPuzzles", "WordDivisionPuzzles\WordDivisionPuzzles.csproj", "{44A9C664-C627-4A82-9CF4-8100AA97CA20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDivisionPuzzles", "WordDivisionPuzzles\WordDivisionPuzzles.csproj", "{44A9C664-C627-4A82-9CF4-8100AA97CA20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

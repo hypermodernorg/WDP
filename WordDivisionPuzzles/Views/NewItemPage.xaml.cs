@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Collections;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 using System.Linq;
 
 
@@ -375,7 +376,11 @@ namespace WordDivisionPuzzles.Views
             };
             BindingContext = this;
 
+            //var strings = new ArrayList().Cast<string>().ToArray();
 
+            var theLetters = string.Join(" ", Item.Letters);
+
+            Preferences.Set(Item.Id, Item.Divisor + "|" + Item.Quotient + "|" + theLetters + "|" + Item.AlphaDivisor + "|"+ Item.AlphaQuotient);
         }
 
         async void Save_Clicked(object sender, EventArgs e)
