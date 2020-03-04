@@ -1,13 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Collections;
-using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
-using System.Linq;
 
 namespace WordDivisionPuzzles
 {
-    
+
     public class CommonTasks
     {
         static int columnWidth = 20;

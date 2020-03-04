@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using WordDivisionPuzzles.ViewModels;
-using System.Collections;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace WordDivisionPuzzles.Views
@@ -22,10 +21,10 @@ namespace WordDivisionPuzzles.Views
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
             InitializeComponent();
-   
+
             var strDivisor = viewModel.Item.Divisor; // Get the divisor from the model.
             var strQuotient = viewModel.Item.Quotient; // Get the quotient from the model.
-    
+
 
             Random random = new Random();
             ToolbarItem toolBarItem = (ToolbarItem)Content.FindByName("NewToolBar");
@@ -327,31 +326,35 @@ namespace WordDivisionPuzzles.Views
             {
                 Quotient = "Item 1",
                 Divisor = "This is an item description.",
-           
+
             };
 
             viewModel = new ItemDetailViewModel(item);
             BindingContext = viewModel;
         }
 
-  
+
         async void DeleteItem_Clicked(object sender, EventArgs e)
         {
 
             var toolBarDelete = (ToolbarItem)sender; // The delete button
 
             //MessagingCenter.Send(this, "DeleteItem", Item);
-            
+
 
             //await Navigation.PopModalAsync();
 
 
-           
+
             string theID = toolBarDelete.CommandParameter.ToString(); // The id of the item.
-        
+
             BaseViewModel baseViewModel = new BaseViewModel();
             await baseViewModel.DataStore.DeleteItemAsync(theID);
-       
+            var wpddb = new WDPDB();
+
+            WDPItem wdpitem = new WDPItem();
+            wdpitem.Id = theID;
+            await wpddb.DeleteItemAsync(wdpitem);
             await Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
         }
     }

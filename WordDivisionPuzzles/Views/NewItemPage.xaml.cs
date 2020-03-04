@@ -1,10 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections;
+using System.ComponentModel;
+using System.Linq;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
-using Xamarin.Essentials;
-using System.Linq;
+
 
 
 namespace WordDivisionPuzzles.Views
@@ -20,6 +20,7 @@ namespace WordDivisionPuzzles.Views
 
         //Todo: Need to correct the horizontal border when the product length is less than iDivideInto length.
         public Item Item { get; set; }
+        public WDPItem wdpItem { get; set; }
         static int columnWidth = 20;
         static ArrayList letters = new ArrayList();
         CommonTasks task = new CommonTasks();
@@ -29,10 +30,8 @@ namespace WordDivisionPuzzles.Views
             InitializeComponent();
 
             // Class from the CommonTasks.cs file.
-    
             int iDivisor = task.GetRandom(500, 1000);
             int iQuotient = task.GetRandom(1000, 99999);
-       
             int iDividend = iDivisor * iQuotient;
             string divisor = iDivisor.ToString();
             string quotient = iQuotient.ToString();
@@ -45,19 +44,19 @@ namespace WordDivisionPuzzles.Views
 
             Grid grid = task.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
             letters = MakeLetters();
-           
 
-            string zero = (string)letters[0];
-            string one = (string)letters[1];
-            string two = (string)letters[2];
-            string three = (string)letters[3];
-            string four = (string)letters[4];
-            string five = (string)letters[5];
-            string six = (string)letters[6];
-            string seven = (string)letters[7];
-            string eight = (string)letters[8];
-            string nine = (string)letters[9];
-          
+            {
+                string zero = (string)letters[0];
+                string one = (string)letters[1];
+                string two = (string)letters[2];
+                string three = (string)letters[3];
+                string four = (string)letters[4];
+                string five = (string)letters[5];
+                string six = (string)letters[6];
+                string seven = (string)letters[7];
+                string eight = (string)letters[8];
+                string nine = (string)letters[9];
+            }
 
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
             grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
@@ -75,9 +74,9 @@ namespace WordDivisionPuzzles.Views
             ArrayList letters = new ArrayList();
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-            for (int i = 0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                int iRandom = random.Next(0, 25-i);
+                int iRandom = random.Next(0, 25 - i);
                 letters.Add(alphabet.Substring(iRandom, 1));
                 alphabet = alphabet.Remove(iRandom, 1);
             }
@@ -96,7 +95,7 @@ namespace WordDivisionPuzzles.Views
 
             // First & Second Row: The Quotient
             int j = 0;
-           
+
             for (int i = 1; i < iTotalLength; i++) // loop through the total number of columns.
             {
 
@@ -128,7 +127,7 @@ namespace WordDivisionPuzzles.Views
 
                     grid.Children.Add(new Label
                     {
-                        Text =  (string) letters[int.Parse(quotient.Substring(j, 1))],
+                        Text = (string)letters[int.Parse(quotient.Substring(j, 1))],
                         FontSize = 24,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
@@ -187,7 +186,7 @@ namespace WordDivisionPuzzles.Views
             int iDivisor = int.Parse(divisor);
             bool isFirstPass = true;
             int iProduct = 0;
- 
+
 
 
             for (int i = divisor.Length; i < dividend.Length; i++)
@@ -202,7 +201,7 @@ namespace WordDivisionPuzzles.Views
                     }
                     else
                     {
-                       iDivideInto = int.Parse(dividend.Substring(0, divisor.Length + 1));
+                        iDivideInto = int.Parse(dividend.Substring(0, divisor.Length + 1));
                         //iCol++;
                         i++;
                     }
@@ -222,7 +221,7 @@ namespace WordDivisionPuzzles.Views
 
                 bool isSubtractFirstPass = true;
 
-              
+
                 for (int j = 0; j < iProduct.ToString().Length; j++)
                 {
                     //Product
@@ -237,7 +236,7 @@ namespace WordDivisionPuzzles.Views
                     , iCol + j, iRow);
 
                     //Subtraction sign
-                   if (isSubtractFirstPass)
+                    if (isSubtractFirstPass)
                     {
                         grid.Children.Add(new Label
                         {
@@ -247,13 +246,13 @@ namespace WordDivisionPuzzles.Views
                             WidthRequest = 4,
                             TextColor = Color.White
                         }
-                        , iCol + j-1, iRow);
+                        , iCol + j - 1, iRow);
 
                         isSubtractFirstPass = false;
                     }
 
                     //Border
-                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow+1); // column, row   -- horizontal border
+                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
                 }
                 iRow += 2;
                 // End Print the Product, Subtraction Sign, and the Border
@@ -264,7 +263,7 @@ namespace WordDivisionPuzzles.Views
                 // Now, lets count how many columns to adjust
                 int iColAdjust = iProduct.ToString().Length - iRemainder.ToString().Length;
                 iCol += iColAdjust;
-                
+
 
 
                 // Next, determine how many characters of dividend to bring down
@@ -273,7 +272,7 @@ namespace WordDivisionPuzzles.Views
                 while (iRemainder < iDivisor)
                 {
                     k++;
-                  iRemainder = int.Parse(iRemainder.ToString() + dividend.Substring(i, k));
+                    iRemainder = int.Parse(iRemainder.ToString() + dividend.Substring(i, k));
 
                 }
                 iDivideInto = iRemainder;
@@ -324,15 +323,15 @@ namespace WordDivisionPuzzles.Views
 
                     isSubtractFirstPass2 = false;
                 }
-               
+
 
                 //Border
                 grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
-            
+
 
                 iLastZeroPosition = j;
             }
-            iRow+=2;
+            iRow += 2;
             // Last Zero
             grid.Children.Add(new Label
             {
@@ -354,7 +353,7 @@ namespace WordDivisionPuzzles.Views
         {
             string alphaDivisor = "";
             string alphaQuotient = "";
-            for (int i = 0;i<iDivisor.ToString().Length;i++)
+            for (int i = 0; i < iDivisor.ToString().Length; i++)
             {
                 // (string) letters[int.Parse(quotient.Substring(j, 1))]
                 alphaDivisor += (string)letters[int.Parse(iDivisor.ToString().Substring(i, 1))];
@@ -368,24 +367,34 @@ namespace WordDivisionPuzzles.Views
             Item = new Item
             {
                 Id = Guid.NewGuid().ToString(),
-                Quotient        = iQuotient.ToString(),
-                Divisor         = iDivisor.ToString(),
-                Letters         = letters,
-                AlphaQuotient   = alphaQuotient,
-                AlphaDivisor    = alphaDivisor
+                Quotient = iQuotient.ToString(),
+                Divisor = iDivisor.ToString(),
+                Letters = letters,
+                AlphaQuotient = alphaQuotient,
+                AlphaDivisor = alphaDivisor
             };
             BindingContext = this;
 
-            //var strings = new ArrayList().Cast<string>().ToArray();
+            var strings = letters.Cast<string>().ToArray();
 
-            var theLetters = string.Join(" ", Item.Letters);
+            var lettersString = string.Join(" ", strings);
 
-            Preferences.Set(Item.Id, Item.Divisor + "|" + Item.Quotient + "|" + theLetters + "|" + Item.AlphaDivisor + "|"+ Item.AlphaQuotient);
+            wdpItem = new WDPItem
+            {
+                Id = Guid.NewGuid().ToString(),
+                Quotient = iQuotient.ToString(),
+                Divisor = iDivisor.ToString(),
+                Letters = lettersString,
+                AlphaQuotient = alphaQuotient,
+                AlphaDivisor = alphaDivisor
+            };
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "AddItem", Item);
+            WDPDB wdpdb = new WDPDB();
+            await wdpdb.SaveItemAsync(wdpItem);
             await Navigation.PopModalAsync();
         }
 

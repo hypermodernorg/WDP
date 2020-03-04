@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WordDivisionPuzzles.Models;
@@ -14,7 +15,7 @@ namespace WordDivisionPuzzles.Services
         {
             items = new List<Item>()
             {
-              //new Item { Id = System.Guid.NewGuid().ToString(), Quotient = "49832", Divisor="231" },
+                //new Item { Id = System.Guid.NewGuid().ToString(), Quotient = "49832", Divisor="231" },
 
             };
         }
@@ -39,12 +40,12 @@ namespace WordDivisionPuzzles.Services
         {
             Item oldItem = new Item();
 
-            
+
             foreach (var item in items)
             {
                 string idFromItem = item.Id;
                 string idFromPassed = id;
-           
+
 
                 if (item.Id == id)
                 {
@@ -59,11 +60,40 @@ namespace WordDivisionPuzzles.Services
 
         public async Task<Item> GetItemAsync(string id)
         {
+
+
             return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
         }
 
         public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = true)
         {
+
+
+            var getItems = new WDPDB();
+            var items1 = await getItems.GetItemsAsync();
+
+
+            //WDPDB wdpdb = new WDPDB(); //new
+            //var items = await wdpdb.GetItemsAsync(); //new
+            foreach (var item in items1)
+            {
+
+                // need to transform WPDDB item to Model item
+
+
+                var newItem = new Item();
+                newItem.Id = item.Id;
+                newItem.AlphaDivisor = item.AlphaDivisor;
+                newItem.AlphaQuotient = item.AlphaQuotient;
+                newItem.Quotient = item.Quotient;
+                newItem.Divisor = item.Divisor;
+                newItem.Letters = new ArrayList(item.Letters.Split(' '));
+
+                items.Add(newItem);
+
+            }
+
+
             return await Task.FromResult(items);
         }
     }
