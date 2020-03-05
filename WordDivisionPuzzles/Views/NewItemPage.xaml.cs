@@ -5,33 +5,29 @@ using System.Linq;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
 
-
-
 namespace WordDivisionPuzzles.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
 
-
-
     public partial class NewItemPage : ContentPage
     {
-
         //Todo: Need to correct the horizontal border when the product length is less than iDivideInto length.
         public Item Item { get; set; }
         public WDPItem wdpItem { get; set; }
         static int columnWidth = 20;
         static ArrayList letters = new ArrayList();
-        CommonTasks task = new CommonTasks();
+        CommonTasks commonMethods = new CommonTasks();
+     
 
         public NewItemPage()
         {
             InitializeComponent();
 
             // Class from the CommonTasks.cs file.
-            int iDivisor = task.GetRandom(500, 1000);
-            int iQuotient = task.GetRandom(1000, 99999);
+            int iDivisor = commonMethods.GetRandom(500, 1000);
+            int iQuotient = commonMethods.GetRandom(1000, 99999);
             int iDividend = iDivisor * iQuotient;
             string divisor = iDivisor.ToString();
             string quotient = iQuotient.ToString();
@@ -42,31 +38,33 @@ namespace WordDivisionPuzzles.Views
             int iTotalLength = iDivisorLength + iDividendLength + 1;
 
 
-            Grid grid = task.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
+            Grid grid = commonMethods.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
+           
             letters = MakeLetters();
-
-            {
-                string zero = (string)letters[0];
-                string one = (string)letters[1];
-                string two = (string)letters[2];
-                string three = (string)letters[3];
-                string four = (string)letters[4];
-                string five = (string)letters[5];
-                string six = (string)letters[6];
-                string seven = (string)letters[7];
-                string eight = (string)letters[8];
-                string nine = (string)letters[9];
-            }
 
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
             grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
 
-            Grid containerGrid = (Grid)Content.FindByName("NewGrid");
-            containerGrid.Children.Add(grid, 0, 0);
-            this.Content = containerGrid; // set the content
-            StoreItem(iDivisor, iQuotient);
+            
+            Grid containerGrid = (Grid)Content.FindByName("NewGrid1");
+            Grid containerGrid2 = (Grid)Content.FindByName("NewGrid2");
 
+            Grid answerGrid = commonMethods.AnswerGrid();
+            //containerGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            containerGrid.Children.Add(grid, 0, 0);
+            //containerGrid2.Children.Add(answerGrid, 0, 0);
+
+            StackLayout01.Children.Add(containerGrid);
+            //StackLayout02.Children.Add(containerGrid2);
+
+            StackLayout0.Children.Add(StackLayout01);
+            //StackLayout0.Children.Add(StackLayout02);
+
+            this.Content = StackLayout0;//containerGrid; // set the content
+            StoreItem(iDivisor, iQuotient);
         }
+
+
 
         public ArrayList MakeLetters()
         {
@@ -83,7 +81,6 @@ namespace WordDivisionPuzzles.Views
 
             return letters;
         }
-
 
         // The first three lines, including the horizontal border, of the long division problem.
         public Grid FirstThreeRows(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
@@ -103,11 +100,11 @@ namespace WordDivisionPuzzles.Views
                 {
                     if (i == iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(task.BvBorderVertical(), i, 4); // column, row   
+                        grid.Children.Add(commonMethods.BvBorderVertical(), i, 4); // column, row   
                     }
                     if (i > iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   
+                        grid.Children.Add(commonMethods.BvBorderHorizontal(), i, 3); // column, row   
                     }
 
                     if (i < iDivisorLength) // else, print empty spaces
@@ -135,7 +132,7 @@ namespace WordDivisionPuzzles.Views
                     }
                         , i, 2);
 
-                    grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
+                    grid.Children.Add(commonMethods.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
 
                     j++;
                 }
@@ -143,7 +140,7 @@ namespace WordDivisionPuzzles.Views
 
             // Third Rows: The Divisor and Dividend
             j = 0;
-            grid.Children.Add(task.BvBorderCorner(), iDivisorLength, 3);
+            grid.Children.Add(commonMethods.BvBorderCorner(), iDivisorLength, 3);
             for (int i = 0; i < iTotalLength; i++)
             {
                 if (i < iDivisorLength)
@@ -185,8 +182,7 @@ namespace WordDivisionPuzzles.Views
             int iDivideInto = 0;
             int iDivisor = int.Parse(divisor);
             bool isFirstPass = true;
-            int iProduct = 0;
-
+            int iProduct;
 
 
             for (int i = divisor.Length; i < dividend.Length; i++)
@@ -252,7 +248,7 @@ namespace WordDivisionPuzzles.Views
                     }
 
                     //Border
-                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                    grid.Children.Add(commonMethods.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
                 }
                 iRow += 2;
                 // End Print the Product, Subtraction Sign, and the Border
@@ -326,7 +322,7 @@ namespace WordDivisionPuzzles.Views
 
 
                 //Border
-                grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                grid.Children.Add(commonMethods.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
 
 
                 iLastZeroPosition = j;
@@ -379,6 +375,8 @@ namespace WordDivisionPuzzles.Views
 
             var lettersString = string.Join(" ", strings);
 
+            LettersButton.CommandParameter = lettersString;
+
             wdpItem = new WDPItem
             {
                 Id = Guid.NewGuid().ToString(),
@@ -401,6 +399,30 @@ namespace WordDivisionPuzzles.Views
         async void Cancel_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            bool checkAnswer = true;
+            Button lettersButton = (Button)sender;
+            string answerKey = lettersButton.CommandParameter.ToString();
+            if (e0.Text != answerKey.Substring(0, 1)) { checkAnswer = false; }
+            if (e1.Text != answerKey.Substring(1, 1)) { checkAnswer = false; }
+            if (e2.Text != answerKey.Substring(2, 1)) { checkAnswer = false; }
+            if (e3.Text != answerKey.Substring(3, 1)) { checkAnswer = false; }
+            if (e4.Text != answerKey.Substring(4, 1)) { checkAnswer = false; }
+            if (e5.Text != answerKey.Substring(5, 1)) { checkAnswer = false; }
+            if (e6.Text != answerKey.Substring(6, 1)) { checkAnswer = false; }
+            if (e7.Text != answerKey.Substring(7, 1)) { checkAnswer = false; }
+            if (e8.Text != answerKey.Substring(8, 1)) { checkAnswer = false; }
+            if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
+
+            if (checkAnswer == false)
+            {
+                lettersButton.BackgroundColor = Color.DarkRed;
+                lettersButton.Text = "Incorrect, Try Again";
+            }
+
         }
     }
 }

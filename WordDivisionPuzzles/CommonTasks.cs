@@ -7,6 +7,7 @@ namespace WordDivisionPuzzles
     public class CommonTasks
     {
         static int columnWidth = 20;
+        static int answerColumnWidth = 25;
 
         public int GetRandom(int iRandomStart, int iRandomEnd)
         {
@@ -20,6 +21,50 @@ namespace WordDivisionPuzzles
             }
             return iRandom;
         }
+
+
+        public Grid AnswerGrid()
+        {
+            Grid answerGrid = new Grid();
+            answerGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+            answerGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            answerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+
+            for (int i = 1; i<11;i++)
+            {
+                answerGrid.Children.Add(new Label
+                {
+                    Text = (i-1).ToString(),
+                    FontSize = 24,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    WidthRequest = answerColumnWidth,
+                    TextColor = Color.White
+                }  , i, 0);
+
+                answerGrid.Children.Add(new Entry
+                {
+                    FontSize = 24,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    WidthRequest = answerColumnWidth,
+                    BackgroundColor = Color.Silver,
+                    TextColor = Color.DarkSlateGray
+                }, i, 1);
+            }
+
+            return answerGrid;
+        }
+
 
         public Grid ShapeGrid(int iTotalLength, int iDivisorLength)
         {

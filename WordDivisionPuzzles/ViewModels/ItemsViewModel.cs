@@ -41,30 +41,22 @@ namespace WordDivisionPuzzles.ViewModels
                 Items.Clear();
 
 
-                // var items = await DataStore.GetItemsAsync(true);
-
+                // Get items in the database.
                 var getItems = new WDPDB();
                 var items = await getItems.GetItemsAsync();
 
-
-                //WDPDB wdpdb = new WDPDB(); //new
-                //var items = await wdpdb.GetItemsAsync(); //new
+                // For each item in the database, convert it to an
+                // item compatable with the Item class.
                 foreach (var item in items)
                 {
-
-                    // need to transform WPDDB item to Model item
-
-
                     var newItem = new Item();
                     newItem.Id = item.Id;
                     newItem.AlphaDivisor = item.AlphaDivisor;
                     newItem.AlphaQuotient = item.AlphaQuotient;
                     newItem.Quotient = item.Quotient;
                     newItem.Divisor = item.Divisor;
-                    newItem.Letters = new ArrayList(item.Letters.Split(' '));
-
-                    Items.Add(newItem);
-
+                    newItem.Letters = new ArrayList(item.Letters.Split(' ')); // Convert from string to ArrayList
+                    Items.Add(newItem); // Add the converted item to the collection of Items.
                 }
             }
             catch (Exception ex)

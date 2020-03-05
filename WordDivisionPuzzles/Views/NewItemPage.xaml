@@ -11,11 +11,61 @@
         <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
         <ToolbarItem Text="Save" Clicked="Save_Clicked" />
     </ContentPage.ToolbarItems>
-    
-    <ContentPage.Content>
-        <Grid x:Name="NewGrid" Padding="30" BackgroundColor="Black">
 
-        </Grid>
+    <ContentPage.Content>
+        <StackLayout x:Name="StackLayout0" BackgroundColor="Black">
+            <StackLayout x:Name="StackLayout01">
+                <Grid x:Name="NewGrid1" Padding="30" BackgroundColor="Black"></Grid>
+            </StackLayout>
+            <StackLayout x:Name="StackLayout02">
+
+                <Grid x:Name="NewGrid2" Padding="0" BackgroundColor="Black"></Grid>
+                <Grid Margin="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="l0" Grid.Row="0" Grid.Column="0" Text="0" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l1" Grid.Row="0" Grid.Column="1" Text="1" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l2" Grid.Row="0" Grid.Column="2" Text="2" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l3" Grid.Row="0" Grid.Column="3" Text="3" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l4" Grid.Row="0" Grid.Column="4" Text="4" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l5" Grid.Row="0" Grid.Column="5" Text="5" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l6" Grid.Row="0" Grid.Column="6" Text="6" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l7" Grid.Row="0" Grid.Column="7" Text="7" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l8" Grid.Row="0" Grid.Column="8" Text="8" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                    <Label x:Name="l9" Grid.Row="0" Grid.Column="9" Text="9" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
+
+                    <Entry x:Name="e0" Placeholder="" Grid.Row="1" Grid.Column="0" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e1" Placeholder="" Grid.Row="1" Grid.Column="1" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e2" Placeholder="" Grid.Row="1" Grid.Column="2" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e3" Placeholder="" Grid.Row="1" Grid.Column="3" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e4" Placeholder="" Grid.Row="1" Grid.Column="4" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e5" Placeholder="" Grid.Row="1" Grid.Column="5" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e6" Placeholder="" Grid.Row="1" Grid.Column="6" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e7" Placeholder="" Grid.Row="1" Grid.Column="7" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e8" Placeholder="" Grid.Row="1" Grid.Column="8" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e9" Placeholder="" Grid.Row="1" Grid.Column="9" BackgroundColor="DarkGray" FontSize="24"/>
+                </Grid>
+                
+            </StackLayout>
+            <StackLayout x:Name="StackLayout03" VerticalOptions="EndAndExpand">
+                <Button x:Name="LettersButton" Text="Submit Solution" Clicked="Button_Clicked" Margin="0,0,0,0"/>
+            </StackLayout>
+        </StackLayout>
+
+
     </ContentPage.Content>
-    
 </ContentPage>

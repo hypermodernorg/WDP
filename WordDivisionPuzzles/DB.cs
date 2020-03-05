@@ -125,5 +125,6 @@ namespace WordDivisionPuzzles
         public string AlphaDivisor { get; set; }
         public string AlphaQuotient { get; set; }
         public string Letters { get; set; }
+        public bool Solved { get; set; }
     }
 }
