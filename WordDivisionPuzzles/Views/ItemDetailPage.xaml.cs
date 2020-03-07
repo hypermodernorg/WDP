@@ -3,7 +3,10 @@ using System.Collections;
 using System.ComponentModel;
 using WordDivisionPuzzles.Models;
 using WordDivisionPuzzles.ViewModels;
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WordDivisionPuzzles.Views
 {
@@ -15,8 +18,27 @@ namespace WordDivisionPuzzles.Views
     public partial class ItemDetailPage : ContentPage
     {
         ItemDetailViewModel viewModel;
+
+        public Item Item { get; set; }
         static int columnWidth = 20;
-        CommonTasks task = new CommonTasks();
+        public WDPItem wdpItem { get; set; }
+        static ArrayList letters = new ArrayList();
+        CommonTasks commonMethods = new CommonTasks();
+
+        public ItemDetailPage()
+        {
+            InitializeComponent();
+
+            var item = new Item
+            {
+                Quotient = "Item 1",
+                Divisor = "This is an item description.",
+
+            };
+
+            viewModel = new ItemDetailViewModel(item);
+            BindingContext = viewModel;
+        }
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
@@ -43,17 +65,44 @@ namespace WordDivisionPuzzles.Views
             int iTotalLength = iDivisorLength + iDividendLength + 1;
 
 
-            Grid grid = task.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
+            Grid grid = commonMethods.ShapeGrid(iTotalLength, iDivisorLength); // Create the grid size.
             BindingContext = this;
             var letters = viewModel.Item.Letters;
 
+            var strings = letters.Cast<string>().ToArray();
+
+            var lettersString = string.Join(" ", strings);
+
+            //LettersButton1.CommandParameter = lettersString;
+            LettersButton1.CommandParameter = viewModel.Item.Id;
+            if (viewModel.Item.Solved == 1)
+            {
+                LettersButton1.IsEnabled = false;
+            }
 
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
             grid = LastLines(iTotalLength, divisor, quotient, dividend, grid, letters);
 
-            Grid containerGrid = (Grid)Content.FindByName("NewGrid");
+            Grid containerGrid = (Grid)Content.FindByName("NewGrid1");
+            Grid containerGrid2 = (Grid)Content.FindByName("NewGrid2");
+
+
+            Grid answerGrid = commonMethods.AnswerGrid();
+            //containerGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             containerGrid.Children.Add(grid, 0, 0);
-            this.Content = containerGrid; // set the content
+            //containerGrid2.Children.Add(answerGrid, 0, 0);
+
+            StackLayout01.Children.Add(containerGrid);
+            //StackLayout02.Children.Add(containerGrid2);
+
+            StackLayout0.Children.Add(StackLayout01);
+            //StackLayout0.Children.Add(StackLayout02);
+
+            this.Content = StackLayout0;//containerGrid; // set the content
+            //this.Content = containerGrid; // set the content
+
+        
+  
         }
         // The first three lines, including the horizontal border, of the long division problem.
         public Grid FirstThreeRows(int iTotalLength, string divisor, string quotient, string dividend, Grid grid, ArrayList letters)
@@ -73,11 +122,11 @@ namespace WordDivisionPuzzles.Views
                 {
                     if (i == iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(task.BvBorderVertical(), i, 4); // column, row   
+                        grid.Children.Add(commonMethods.BvBorderVertical(), i, 4); // column, row   
                     }
                     if (i > iDivisorLength) // if this, then print the vertical border
                     {
-                        grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   
+                        grid.Children.Add(commonMethods.BvBorderHorizontal(), i, 3); // column, row   
                     }
 
                     if (i < iDivisorLength) // else, print empty spaces
@@ -105,7 +154,7 @@ namespace WordDivisionPuzzles.Views
                     }
                         , i, 2);
 
-                    grid.Children.Add(task.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
+                    grid.Children.Add(commonMethods.BvBorderHorizontal(), i, 3); // column, row   -- horizontal border
 
                     j++;
                 }
@@ -113,7 +162,7 @@ namespace WordDivisionPuzzles.Views
 
             // Third Rows: The Divisor and Dividend
             j = 0;
-            grid.Children.Add(task.BvBorderCorner(), iDivisorLength, 3);
+            grid.Children.Add(commonMethods.BvBorderCorner(), iDivisorLength, 3);
             for (int i = 0; i < iTotalLength; i++)
             {
                 if (i < iDivisorLength)
@@ -222,7 +271,7 @@ namespace WordDivisionPuzzles.Views
                     }
 
                     //Border
-                    grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                    grid.Children.Add(commonMethods.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
                 }
                 iRow += 2;
                 // End Print the Product, Subtraction Sign, and the Border
@@ -296,7 +345,7 @@ namespace WordDivisionPuzzles.Views
 
 
                 //Border
-                grid.Children.Add(task.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
+                grid.Children.Add(commonMethods.BvBorderHorizontal(), iCol + j, iRow + 1); // column, row   -- horizontal border
 
 
                 iLastZeroPosition = j;
@@ -316,24 +365,7 @@ namespace WordDivisionPuzzles.Views
             return grid;
         }
 
-
-
-        public ItemDetailPage()
-        {
-            InitializeComponent();
-
-            var item = new Item
-            {
-                Quotient = "Item 1",
-                Divisor = "This is an item description.",
-
-            };
-
-            viewModel = new ItemDetailViewModel(item);
-            BindingContext = viewModel;
-        }
-
-
+        // Delete the current puzzle.
         async void DeleteItem_Clicked(object sender, EventArgs e)
         {
 
@@ -356,6 +388,85 @@ namespace WordDivisionPuzzles.Views
             wdpitem.Id = theID;
             await wpddb.DeleteItemAsync(wdpitem);
             await Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
+        }
+
+        // Button click that submits user answer.
+        private void Submit_Answer(object sender, EventArgs e)
+        {
+
+
+            StartAnimation(sender);
+        }
+
+        private async void StartAnimation(object sender)
+        {
+
+            ////////////////////////
+           
+            Button lettersButton1 = (Button)sender;
+            string answerID = lettersButton1.CommandParameter.ToString();
+            bool checkAnswer = true;
+
+            WDPDB wdpdb = new WDPDB();
+            WDPItem wdpitem = new WDPItem();
+            wdpitem = await wdpdb.GetItemAsync(answerID);
+
+            string t1 = wdpitem.Id;
+            string t2 = wdpitem.Letters;
+            string t3 = wdpitem.Solved.ToString();
+            string t4 = wdpitem.Quotient.ToString();
+
+
+            string answerKey = wdpitem.Letters;
+            answerKey = Regex.Replace(answerKey, @"\s+", "");
+
+            if (e0.Text != answerKey.Substring(0, 1)) { checkAnswer = false; }
+            if (e1.Text != answerKey.Substring(1, 1)) { checkAnswer = false; }
+            if (e2.Text != answerKey.Substring(2, 1)) { checkAnswer = false; }
+            if (e3.Text != answerKey.Substring(3, 1)) { checkAnswer = false; }
+            if (e4.Text != answerKey.Substring(4, 1)) { checkAnswer = false; }
+            if (e5.Text != answerKey.Substring(5, 1)) { checkAnswer = false; }
+            if (e6.Text != answerKey.Substring(6, 1)) { checkAnswer = false; }
+            if (e7.Text != answerKey.Substring(7, 1)) { checkAnswer = false; }
+            if (e8.Text != answerKey.Substring(8, 1)) { checkAnswer = false; }
+            if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
+            ///////////////////////////
+
+            checkAnswer = true;
+            if (checkAnswer == false)
+            {
+
+                lettersButton1.BackgroundColor = Color.DarkRed;
+                lettersButton1.Text = "Incorrect, Try Again";
+                lettersButton1.TextColor = Color.White;
+                await Task.Delay(400);
+                await lettersButton1.FadeTo(0, 400);
+                await Task.Delay(400);
+                await lettersButton1.FadeTo(1, 400);
+                lettersButton1.BackgroundColor = Color.Silver;
+                lettersButton1.Text = "Submit Solution";
+                lettersButton1.TextColor = Color.Black;
+            }
+
+            if (checkAnswer == true)
+            {
+
+                lettersButton1.BackgroundColor = Color.DarkGreen;
+                lettersButton1.Text = "Correct! Good work!";
+                await Task.Delay(400);
+                await lettersButton1.FadeTo(0, 400);
+                await Task.Delay(400);
+                await lettersButton1.FadeTo(1, 400);
+                lettersButton1.BackgroundColor = Color.Black;
+                lettersButton1.Text = "Solved";
+                lettersButton1.TextColor = Color.Beige;
+                lettersButton1.IsEnabled = true;
+
+
+                wdpitem.Solved = 1;
+                await wdpdb.SaveItemAsync(wdpitem);
+
+            }
         }
     }
 }

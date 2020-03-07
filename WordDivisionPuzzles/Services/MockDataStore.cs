@@ -88,6 +88,7 @@ namespace WordDivisionPuzzles.Services
                 newItem.Quotient = item.Quotient;
                 newItem.Divisor = item.Divisor;
                 newItem.Letters = new ArrayList(item.Letters.Split(' '));
+                newItem.Solved = item.Solved;
 
                 items.Add(newItem);
 

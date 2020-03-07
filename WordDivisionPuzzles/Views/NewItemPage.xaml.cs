@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using WordDivisionPuzzles.Models;
 using Xamarin.Forms;
 
@@ -13,21 +14,22 @@ namespace WordDivisionPuzzles.Views
 
     public partial class NewItemPage : ContentPage
     {
-        //Todo: Need to correct the horizontal border when the product length is less than iDivideInto length.
+        //Todo: Most of this can be deleted due to change in navigation structure.
+        //Todo: However, care must be taken to ensure needed items remain.
+        //Todo: May leave as is as a compariason against ItemDetailPage's evolution.
         public Item Item { get; set; }
         public WDPItem wdpItem { get; set; }
         static int columnWidth = 20;
         static ArrayList letters = new ArrayList();
         CommonTasks commonMethods = new CommonTasks();
-     
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            // Class from the CommonTasks.cs file.
-            int iDivisor = commonMethods.GetRandom(500, 1000);
-            int iQuotient = commonMethods.GetRandom(1000, 99999);
+            
+            int iDivisor = commonMethods.GetRandom(500, 1000); // Class from the CommonTasks.cs file.
+            int iQuotient = commonMethods.GetRandom(1000, 99999); // Class from the CommonTasks.cs file.
             int iDividend = iDivisor * iQuotient;
             string divisor = iDivisor.ToString();
             string quotient = iQuotient.ToString();
@@ -63,8 +65,6 @@ namespace WordDivisionPuzzles.Views
             this.Content = StackLayout0;//containerGrid; // set the content
             StoreItem(iDivisor, iQuotient);
         }
-
-
 
         public ArrayList MakeLetters()
         {
@@ -345,7 +345,7 @@ namespace WordDivisionPuzzles.Views
         // Store the quotient and divisor for later.
         // Later make integer quotient and divisor hidden, while displaying
         // .. the alphabetical form.
-        public void StoreItem(int iDivisor, int iQuotient)
+        public async void StoreItem(int iDivisor, int iQuotient)
         {
             string alphaDivisor = "";
             string alphaQuotient = "";
@@ -386,6 +386,11 @@ namespace WordDivisionPuzzles.Views
                 AlphaQuotient = alphaQuotient,
                 AlphaDivisor = alphaDivisor
             };
+            //MessagingCenter.Send(this, "AddItem", Item);
+            WDPDB wdpdb = new WDPDB();
+            await wdpdb.SaveItemAsync(wdpItem);
+            //await Navigation.PopModalAsync();
+            await Navigation.PushAsync(new ItemsPage());
         }
 
         async void Save_Clicked(object sender, EventArgs e)
@@ -393,7 +398,8 @@ namespace WordDivisionPuzzles.Views
             MessagingCenter.Send(this, "AddItem", Item);
             WDPDB wdpdb = new WDPDB();
             await wdpdb.SaveItemAsync(wdpItem);
-            await Navigation.PopModalAsync();
+            await Navigation.PushAsync(new ItemsPage());
+            //await Navigation.PopModalAsync();
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
@@ -406,6 +412,7 @@ namespace WordDivisionPuzzles.Views
             bool checkAnswer = true;
             Button lettersButton = (Button)sender;
             string answerKey = lettersButton.CommandParameter.ToString();
+
             if (e0.Text != answerKey.Substring(0, 1)) { checkAnswer = false; }
             if (e1.Text != answerKey.Substring(1, 1)) { checkAnswer = false; }
             if (e2.Text != answerKey.Substring(2, 1)) { checkAnswer = false; }
@@ -417,12 +424,54 @@ namespace WordDivisionPuzzles.Views
             if (e8.Text != answerKey.Substring(8, 1)) { checkAnswer = false; }
             if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
 
+            checkAnswer = true;
+
             if (checkAnswer == false)
             {
-                lettersButton.BackgroundColor = Color.DarkRed;
-                lettersButton.Text = "Incorrect, Try Again";
+                StartAnimation(LettersButton, checkAnswer);
+ 
+            }
+            if (checkAnswer == true)
+            {
+                StartAnimation(LettersButton, checkAnswer);
+
             }
 
+        }
+        private async void StartAnimation(Button lettersButton, bool checkAnswer)
+        {
+
+            if (checkAnswer == false) {
+
+                lettersButton.BackgroundColor = Color.DarkRed;
+                lettersButton.Text = "Incorrect, Try Again";
+                await Task.Delay(400);
+                await lettersButton.FadeTo(0, 250);
+                await Task.Delay(400);
+                await lettersButton.FadeTo(1, 250);
+                lettersButton.BackgroundColor = Color.Silver;
+                lettersButton.Text = "Submit Solution";
+            }
+
+            if (checkAnswer == true)
+            {
+
+                lettersButton.BackgroundColor = Color.DarkGreen;
+                lettersButton.Text = "Correct! Good work!";
+                await Task.Delay(400);
+                await lettersButton.FadeTo(0, 250);
+                await Task.Delay(400);
+                await lettersButton.FadeTo(1, 250);
+                lettersButton.BackgroundColor = Color.Black;
+                lettersButton.Text = "Solved";
+                //lettersButton.IsEnabled = false;
+
+                // add logic to change the item.solved to true and save to db.
+                //MessagingCenter.Send(this, "AddItem", Item);
+                WDPDB wdpdb = new WDPDB();
+                wdpItem.Solved = 1;
+                await wdpdb.SaveItemAsync(wdpItem);
+            }
         }
     }
 }

@@ -49,14 +49,34 @@ namespace WordDivisionPuzzles.ViewModels
                 // item compatable with the Item class.
                 foreach (var item in items)
                 {
-                    var newItem = new Item();
-                    newItem.Id = item.Id;
-                    newItem.AlphaDivisor = item.AlphaDivisor;
-                    newItem.AlphaQuotient = item.AlphaQuotient;
-                    newItem.Quotient = item.Quotient;
-                    newItem.Divisor = item.Divisor;
-                    newItem.Letters = new ArrayList(item.Letters.Split(' ')); // Convert from string to ArrayList
-                    Items.Add(newItem); // Add the converted item to the collection of Items.
+                    if (item.Solved !=1)
+                    {
+                        var newItem = new Item();
+                        newItem.Id = item.Id;
+                        newItem.AlphaDivisor = item.AlphaDivisor;
+                        newItem.AlphaQuotient = item.AlphaQuotient;
+                        newItem.Quotient = item.Quotient;
+                        newItem.Divisor = item.Divisor;
+                        newItem.Letters = new ArrayList(item.Letters.Split(' ')); // Convert from string to ArrayList
+                        newItem.Solved = item.Solved;
+                        Items.Add(newItem); // Add the converted item to the collection of Items.
+                    }
+                }
+                foreach (var item in items)
+                {
+                    if (item.Solved == 1)
+                    {
+                        var newItem = new Item();
+                        newItem.Id = item.Id;
+                        newItem.AlphaDivisor = item.AlphaDivisor;
+                        newItem.AlphaQuotient = item.AlphaQuotient;
+                        newItem.Quotient = item.Quotient;
+                        newItem.Divisor = item.Divisor;
+                        newItem.Letters = new ArrayList(item.Letters.Split(' ')); // Convert from string to ArrayList
+                        newItem.Solved = item.Solved;
+                        Items.Add(newItem); // Add the converted item to the collection of Items.
+                    }
+
                 }
             }
             catch (Exception ex)

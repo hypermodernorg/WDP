@@ -41,7 +41,7 @@ namespace WordDivisionPuzzles.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
+            //if (viewModel.Items.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
     }

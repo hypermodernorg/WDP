@@ -74,13 +74,14 @@ namespace WordDivisionPuzzles
 
         public Task<int> SaveItemAsync(WDPItem item)
         {
-            //if (item.Id != "")
-            //{
-            //    return Database.UpdateAsync(item);
-            //}
-            //else
+           // string solved = item.Solved.ToString(); //null
+           // string letters = item.Letters.ToString(); //null
+            if (item.Solved == 1) // if solved, item has already been saved, we just need to mark solved as true (or 1)
+            {
+                return Database.UpdateAsync(item);
+            }
 
-            // UpdateAsync may be needed later to mark puzzles as solved.
+            else // if not solved, then this is a new item and it needs to be saved to the database.
             {
                 return Database.InsertAsync(item);
             }
@@ -125,6 +126,6 @@ namespace WordDivisionPuzzles
         public string AlphaDivisor { get; set; }
         public string AlphaQuotient { get; set; }
         public string Letters { get; set; }
-        public bool Solved { get; set; }
+        public int Solved { get; set; }
     }
 }

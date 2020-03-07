@@ -29,7 +29,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10" BackgroundColor="DarkGray" Margin="0, 1,0,1" Orientation="Horizontal">
+                        <StackLayout Padding="10" BackgroundColor="#BADBF5" Margin="0, 1,0,1" Orientation="Horizontal">
                             <Label Text="{Binding AlphaDivisor}" 
                                 d:Text="{Binding .}"
                                 LineBreakMode="NoWrap" 

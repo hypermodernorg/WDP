@@ -48,16 +48,16 @@
                     <Label x:Name="l8" Grid.Row="0" Grid.Column="8" Text="8" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
                     <Label x:Name="l9" Grid.Row="0" Grid.Column="9" Text="9" TextColor="White" FontSize="24" HorizontalTextAlignment="Center"></Label>
 
-                    <Entry x:Name="e0" Placeholder="" Grid.Row="1" Grid.Column="0" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e1" Placeholder="" Grid.Row="1" Grid.Column="1" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e2" Placeholder="" Grid.Row="1" Grid.Column="2" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e3" Placeholder="" Grid.Row="1" Grid.Column="3" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e4" Placeholder="" Grid.Row="1" Grid.Column="4" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e5" Placeholder="" Grid.Row="1" Grid.Column="5" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e6" Placeholder="" Grid.Row="1" Grid.Column="6" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e7" Placeholder="" Grid.Row="1" Grid.Column="7" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e8" Placeholder="" Grid.Row="1" Grid.Column="8" BackgroundColor="DarkGray" FontSize="24"/>
-                    <Entry x:Name="e9" Placeholder="" Grid.Row="1" Grid.Column="9" BackgroundColor="DarkGray" FontSize="24"/>
+                    <Entry x:Name="e0" Placeholder="" Grid.Row="1" Grid.Column="0" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e1" Placeholder="" Grid.Row="1" Grid.Column="1" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e2" Placeholder="" Grid.Row="1" Grid.Column="2" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e3" Placeholder="" Grid.Row="1" Grid.Column="3" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e4" Placeholder="" Grid.Row="1" Grid.Column="4" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e5" Placeholder="" Grid.Row="1" Grid.Column="5" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e6" Placeholder="" Grid.Row="1" Grid.Column="6" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e7" Placeholder="" Grid.Row="1" Grid.Column="7" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e8" Placeholder="" Grid.Row="1" Grid.Column="8" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
+                    <Entry x:Name="e9" Placeholder="" Grid.Row="1" Grid.Column="9" BackgroundColor="DarkGray" FontSize="24" MaxLength="1"/>
                 </Grid>
                 
             </StackLayout>
