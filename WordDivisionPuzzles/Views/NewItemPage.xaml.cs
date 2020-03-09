@@ -56,13 +56,13 @@ namespace WordDivisionPuzzles.Views
             containerGrid.Children.Add(grid, 0, 0);
             //containerGrid2.Children.Add(answerGrid, 0, 0);
 
-            StackLayout01.Children.Add(containerGrid);
+            //StackLayout01.Children.Add(containerGrid);
             //StackLayout02.Children.Add(containerGrid2);
 
-            StackLayout0.Children.Add(StackLayout01);
+            //StackLayout0.Children.Add(StackLayout01);
             //StackLayout0.Children.Add(StackLayout02);
 
-            this.Content = StackLayout0;//containerGrid; // set the content
+            //this.Content = StackLayout0;//containerGrid; // set the content
             StoreItem(iDivisor, iQuotient);
         }
 
@@ -390,88 +390,88 @@ namespace WordDivisionPuzzles.Views
             WDPDB wdpdb = new WDPDB();
             await wdpdb.SaveItemAsync(wdpItem);
             //await Navigation.PopModalAsync();
-            await Navigation.PushAsync(new ItemsPage());
+            //await Navigation.PushAsync(new ItemsPage());
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
-            WDPDB wdpdb = new WDPDB();
-            await wdpdb.SaveItemAsync(wdpItem);
-            await Navigation.PushAsync(new ItemsPage());
+            //MessagingCenter.Send(this, "AddItem", Item);
+            //WDPDB wdpdb = new WDPDB();
+            //await wdpdb.SaveItemAsync(wdpItem);
+            //await Navigation.PushAsync(new ItemsPage());
             //await Navigation.PopModalAsync();
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PopModalAsync();
+            //await Navigation.PopModalAsync();
         }
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            bool checkAnswer = true;
-            Button lettersButton = (Button)sender;
-            string answerKey = lettersButton.CommandParameter.ToString();
+            //bool checkAnswer = true;
+            //Button lettersButton = (Button)sender;
+            //string answerKey = lettersButton.CommandParameter.ToString();
 
-            if (e0.Text != answerKey.Substring(0, 1)) { checkAnswer = false; }
-            if (e1.Text != answerKey.Substring(1, 1)) { checkAnswer = false; }
-            if (e2.Text != answerKey.Substring(2, 1)) { checkAnswer = false; }
-            if (e3.Text != answerKey.Substring(3, 1)) { checkAnswer = false; }
-            if (e4.Text != answerKey.Substring(4, 1)) { checkAnswer = false; }
-            if (e5.Text != answerKey.Substring(5, 1)) { checkAnswer = false; }
-            if (e6.Text != answerKey.Substring(6, 1)) { checkAnswer = false; }
-            if (e7.Text != answerKey.Substring(7, 1)) { checkAnswer = false; }
-            if (e8.Text != answerKey.Substring(8, 1)) { checkAnswer = false; }
-            if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
+            //if (e0.Text != answerKey.Substring(0, 1)) { checkAnswer = false; }
+            //if (e1.Text != answerKey.Substring(1, 1)) { checkAnswer = false; }
+            //if (e2.Text != answerKey.Substring(2, 1)) { checkAnswer = false; }
+            //if (e3.Text != answerKey.Substring(3, 1)) { checkAnswer = false; }
+            //if (e4.Text != answerKey.Substring(4, 1)) { checkAnswer = false; }
+            //if (e5.Text != answerKey.Substring(5, 1)) { checkAnswer = false; }
+            //if (e6.Text != answerKey.Substring(6, 1)) { checkAnswer = false; }
+            //if (e7.Text != answerKey.Substring(7, 1)) { checkAnswer = false; }
+            //if (e8.Text != answerKey.Substring(8, 1)) { checkAnswer = false; }
+            //if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
 
-            checkAnswer = true;
+            //checkAnswer = true;
 
-            if (checkAnswer == false)
-            {
-                StartAnimation(LettersButton, checkAnswer);
+            //if (checkAnswer == false)
+            //{
+            //    StartAnimation(LettersButton, checkAnswer);
  
-            }
-            if (checkAnswer == true)
-            {
-                StartAnimation(LettersButton, checkAnswer);
+            //}
+            //if (checkAnswer == true)
+            //{
+            //    StartAnimation(LettersButton, checkAnswer);
 
-            }
+            //}
 
         }
         private async void StartAnimation(Button lettersButton, bool checkAnswer)
         {
 
-            if (checkAnswer == false) {
+            //if (checkAnswer == false) {
 
-                lettersButton.BackgroundColor = Color.DarkRed;
-                lettersButton.Text = "Incorrect, Try Again";
-                await Task.Delay(400);
-                await lettersButton.FadeTo(0, 250);
-                await Task.Delay(400);
-                await lettersButton.FadeTo(1, 250);
-                lettersButton.BackgroundColor = Color.Silver;
-                lettersButton.Text = "Submit Solution";
-            }
+            //    lettersButton.BackgroundColor = Color.DarkRed;
+            //    lettersButton.Text = "Incorrect, Try Again";
+            //    await Task.Delay(400);
+            //    await lettersButton.FadeTo(0, 250);
+            //    await Task.Delay(400);
+            //    await lettersButton.FadeTo(1, 250);
+            //    lettersButton.BackgroundColor = Color.Silver;
+            //    lettersButton.Text = "Submit Solution";
+            //}
 
-            if (checkAnswer == true)
-            {
+            //if (checkAnswer == true)
+            //{
 
-                lettersButton.BackgroundColor = Color.DarkGreen;
-                lettersButton.Text = "Correct! Good work!";
-                await Task.Delay(400);
-                await lettersButton.FadeTo(0, 250);
-                await Task.Delay(400);
-                await lettersButton.FadeTo(1, 250);
-                lettersButton.BackgroundColor = Color.Black;
-                lettersButton.Text = "Solved";
-                //lettersButton.IsEnabled = false;
+            //    lettersButton.BackgroundColor = Color.DarkGreen;
+            //    lettersButton.Text = "Correct! Good work!";
+            //    await Task.Delay(400);
+            //    await lettersButton.FadeTo(0, 250);
+            //    await Task.Delay(400);
+            //    await lettersButton.FadeTo(1, 250);
+            //    lettersButton.BackgroundColor = Color.Black;
+            //    lettersButton.Text = "Solved";
+            //    //lettersButton.IsEnabled = false;
 
-                // add logic to change the item.solved to true and save to db.
-                //MessagingCenter.Send(this, "AddItem", Item);
-                WDPDB wdpdb = new WDPDB();
-                wdpItem.Solved = 1;
-                await wdpdb.SaveItemAsync(wdpItem);
-            }
+            //    // add logic to change the item.solved to true and save to db.
+            //    //MessagingCenter.Send(this, "AddItem", Item);
+            //    WDPDB wdpdb = new WDPDB();
+            //    wdpItem.Solved = 1;
+            //    await wdpdb.SaveItemAsync(wdpItem);
+            //}
         }
     }
 }
