@@ -72,12 +72,27 @@ namespace WordDivisionPuzzles.Views
             var strings = letters.Cast<string>().ToArray();
 
             var lettersString = string.Join(" ", strings);
+            var lettersString1 = string.Join("", strings);
 
             //LettersButton1.CommandParameter = lettersString;
             LettersButton1.CommandParameter = viewModel.Item.Id;
             if (viewModel.Item.Solved == 1)
             {
+                LettersButton1.BackgroundColor = Color.Black;
+                LettersButton1.Text = "Solved";
+                LettersButton1.TextColor = Color.Beige;
                 LettersButton1.IsEnabled = false;
+                e0.Text = letters[0].ToString();
+                e1.Text = letters[1].ToString();
+                e2.Text = letters[2].ToString();
+                e3.Text = letters[3].ToString();
+                e4.Text = letters[4].ToString();
+                e5.Text = letters[5].ToString();
+                e6.Text = letters[6].ToString();
+                e7.Text = letters[7].ToString();
+                e8.Text = letters[8].ToString();
+                e9.Text = letters[9].ToString();
+                SolvedLabel.IsVisible = true;
             }
 
             grid = FirstThreeRows(iTotalLength, divisor, quotient, dividend, grid, letters);
@@ -387,14 +402,14 @@ namespace WordDivisionPuzzles.Views
             WDPItem wdpitem = new WDPItem();
             wdpitem.Id = theID;
             await wpddb.DeleteItemAsync(wdpitem);
-            await Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
+            //await Navigation.PushAsync(new ItemsPage()); // This works to redirect to items list page.
+            await Navigation.PopToRootAsync();
+         
         }
 
         // Button click that submits user answer.
         private void Submit_Answer(object sender, EventArgs e)
         {
-
-
             StartAnimation(sender);
         }
 
@@ -460,7 +475,8 @@ namespace WordDivisionPuzzles.Views
                 lettersButton1.BackgroundColor = Color.Black;
                 lettersButton1.Text = "Solved";
                 lettersButton1.TextColor = Color.Beige;
-                lettersButton1.IsEnabled = true;
+                lettersButton1.IsEnabled = false;
+                SolvedLabel.IsVisible = true;
 
 
                 wdpitem.Solved = 1;

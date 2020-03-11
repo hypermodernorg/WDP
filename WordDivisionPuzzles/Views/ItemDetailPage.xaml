@@ -61,6 +61,7 @@
             </StackLayout>
             <StackLayout x:Name="StackLayout03" VerticalOptions="EndAndExpand">
                 <Button x:Name="LettersButton1" Text="Submit Solution" Clicked="Submit_Answer" Margin="0,0,0,0" FontSize="24"/>
+                <Label x:Name="SolvedLabel" Text="SOLVED"  TextColor="Green" IsVisible="False" FontSize="24" HorizontalTextAlignment="Center"></Label>
             </StackLayout>
         </StackLayout>
 
