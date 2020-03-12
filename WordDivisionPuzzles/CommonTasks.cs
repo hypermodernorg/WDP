@@ -46,7 +46,7 @@ namespace WordDivisionPuzzles
                 answerGrid.Children.Add(new Label
                 {
                     Text = (i-1).ToString(),
-                    FontSize = 24,
+                    FontSize = 22,
                     HorizontalTextAlignment = TextAlignment.Center,
                     WidthRequest = answerColumnWidth,
                     TextColor = Color.White
@@ -54,7 +54,7 @@ namespace WordDivisionPuzzles
 
                 answerGrid.Children.Add(new Entry
                 {
-                    FontSize = 24,
+                    FontSize = 22,
                     HorizontalTextAlignment = TextAlignment.Center,
                     WidthRequest = answerColumnWidth,
                     BackgroundColor = Color.Silver,
@@ -122,7 +122,7 @@ namespace WordDivisionPuzzles
         {
             BoxView boxViewBorder = new BoxView
             {
-                HeightRequest = 5,
+                HeightRequest = 4,
                 BackgroundColor = Color.White,
                 WidthRequest = columnWidth
             };
@@ -133,7 +133,7 @@ namespace WordDivisionPuzzles
         {
             BoxView boxViewBorder = new BoxView
             {
-                WidthRequest = 5,
+                WidthRequest = 4,
                 BackgroundColor = Color.White,
                 HeightRequest = columnWidth
 
@@ -145,9 +145,9 @@ namespace WordDivisionPuzzles
         {
             BoxView boxViewBorder = new BoxView
             {
-                WidthRequest = 5,
+                WidthRequest = 4,
                 BackgroundColor = Color.White,
-                HeightRequest = 5
+                HeightRequest = 4
 
             };
             return boxViewBorder;

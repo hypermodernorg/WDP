@@ -149,7 +149,7 @@ namespace WordDivisionPuzzles.Views
                         grid.Children.Add(new Label
                         {
                             Text = "",
-                            FontSize = 24,
+                            FontSize = 22,
                             WidthRequest = columnWidth
                         }
                             , i, 2);
@@ -162,7 +162,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = (string)letters[int.Parse(quotient.Substring(j, 1))],
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
                         TextColor = Color.White
@@ -185,7 +185,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = (string)letters[int.Parse(divisor.Substring(i, 1))],// divisor.Substring(i, 1),
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
                         TextColor = Color.White
@@ -198,7 +198,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = (string)letters[int.Parse(dividend.Substring(j, 1))], // dividend.Substring(j, 1),
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
                         TextColor = Color.White
@@ -262,7 +262,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = (string)letters[int.Parse(iProduct.ToString().Substring(j, 1))],// iProduct.ToString().Substring(j, 1),
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
                         TextColor = Color.White
@@ -275,7 +275,7 @@ namespace WordDivisionPuzzles.Views
                         grid.Children.Add(new Label
                         {
                             Text = "-",
-                            FontSize = 24,
+                            FontSize = 22,
                             HorizontalTextAlignment = TextAlignment.Center,
                             WidthRequest = 4,
                             TextColor = Color.White
@@ -315,7 +315,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))], // iDivideInto.ToString().Substring(j, 1),
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = columnWidth,
                         TextColor = Color.White
@@ -335,7 +335,7 @@ namespace WordDivisionPuzzles.Views
                 grid.Children.Add(new Label
                 {
                     Text = (string)letters[int.Parse(iDivideInto.ToString().Substring(j, 1))],// iDivideInto.ToString().Substring(j, 1),
-                    FontSize = 24,
+                    FontSize = 22,
                     HorizontalTextAlignment = TextAlignment.Center,
                     WidthRequest = columnWidth,
                     TextColor = Color.White
@@ -348,7 +348,7 @@ namespace WordDivisionPuzzles.Views
                     grid.Children.Add(new Label
                     {
                         Text = "-",
-                        FontSize = 24,
+                        FontSize = 22,
                         HorizontalTextAlignment = TextAlignment.Center,
                         WidthRequest = 4,
                         TextColor = Color.White
@@ -370,7 +370,7 @@ namespace WordDivisionPuzzles.Views
             grid.Children.Add(new Label
             {
                 Text = (string)letters[0],// "0",
-                FontSize = 24,
+                FontSize = 22,
                 HorizontalTextAlignment = TextAlignment.Center,
                 WidthRequest = columnWidth,
                 TextColor = Color.White
@@ -447,7 +447,6 @@ namespace WordDivisionPuzzles.Views
             if (e9.Text != answerKey.Substring(9, 1)) { checkAnswer = false; }
             ///////////////////////////
 
-            checkAnswer = true;
             if (checkAnswer == false)
             {
 
